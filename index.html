@@ -353,7 +353,7 @@ const match=(r,q)=>!q||(r.t+' '+r.ings.map(i=>i[2]).join(' ')).toLowerCase().inc
 const mkS=o=>Object.assign({screen:'home',cat:'Все',q:'',rid:'04',n:1,chk:{},fav:new Set(['02']),list:{},step:0,sheet:false,from:'home',copied:false},o||{});
 
 const tile=(r,s,wide)=>'<div class="tl'+(wide?' wide':'')+'" style="background:'+r.bg+'" data-act="open" data-id="'+r.id+'"><button class="fv'+(s.fav.has(r.id)?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',17)+'</button><div class="im">'+ic(r.s,wide?78:92)+'</div><div>'+(r.sh||r.t)+'<small>'+r.k+' ккал'+(r.per100?' на 100 г':'')+'</small></div></div>';
-const heroB=r=>'<div class="hero" data-act="open" data-id="'+r.id+'"><div><small>Новое</small><h5>'+r.t+'</h5><p>'+r.k+' ккал · '+r.p+' г белка</p></div>'+ic(r.s,130)+'</div>';
+const heroB=r=>'<div class="hero" data-act="open" data-id="'+r.id+'"><div><small>Новое</small><h5>'+r.t+'</h5><p>'+r.k+' ккал · Б '+r.p+' · Ж '+r.f+' · У '+r.c+'</p></div>'+ic(r.s,130)+'</div>';
 function gridHTML(s){
   const vis=R.filter(r=>(s.cat==='Все'||r.cat===s.cat)&&match(r,s.q));
   if(!vis.length)return '<div class="empty"><b>Ничего не нашлось</b><span>Попробуй «курица», «творог» или «шоколад».</span></div>';
@@ -418,7 +418,7 @@ function gridW(s){
   const vis=R.filter(r=>(s.cat==='Все'||r.cat===s.cat)&&match(r,s.q));
   if(!vis.length)return '<div class="empty"><b>Ничего не нашлось</b><span>Попробуй «курица», «творог» или «шоколад».</span></div>';
   const hero=s.cat==='Все'&&!s.q,nw=get(NEW_ID),rest=hero?vis.filter(r=>r.id!==NEW_ID):vis;
-  return (hero?'<div class="dhero" data-act="open" data-id="'+NEW_ID+'"><div><small>Новое</small><h3>'+nw.t+'</h3><p>'+nw.k+' ккал · '+nw.p+' г белка · '+nw.f+' г жиров</p><span class="btn">Открыть рецепт</span></div>'+ic(nw.s,150)+'</div>':'')+'<div class="g3">'+rest.map(r=>tile(r,s,false)).join('')+(hero?pdfT():'')+'</div>';
+  return (hero?'<div class="dhero" data-act="open" data-id="'+NEW_ID+'"><div><small>Новое</small><h3>'+nw.t+'</h3><p>'+nw.k+' ккал · '+nw.p+' г белка · '+nw.f+' г жиров · '+nw.c+' г углеводов</p><span class="btn">Открыть рецепт</span></div>'+ic(nw.s,150)+'</div>':'')+'<div class="g3">'+rest.map(r=>tile(r,s,false)).join('')+(hero?pdfT():'')+'</div>';
 }
 const wHome=s=>wShell(s,'<div class="wh"><aside class="side"><div class="lbl" style="margin-top:0">Разделы</div>'+CATS.map(c=>'<button class="item'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+(c==='Все'?'Все рецепты':c)+'<span>'+(c==='Все'?R.length:R.filter(r=>r.cat===c).length)+'</span></button>').join('')+'</aside><section><div class="chips wchips">'+CATS.map(c=>'<button class="chip'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+c+'</button>').join('')+'</div><div class="js-grid">'+gridW(s)+'</div></section></div>');
 function wRecipe(s){
