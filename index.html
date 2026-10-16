@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fiolet: рецепты с КБЖУ</title>
+<meta name="description" content="Рецепты Fiolet с КБЖУ: быстрые завтраки, ужины и ПП. Порции, список покупок и режим готовки с таймером.">
+<meta property="og:title" content="Fiolet: рецепты с КБЖУ">
+<meta property="og:description" content="Быстрые завтраки, ужины и ПП. Порции, список покупок и режим готовки с таймером.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#3E2A3C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap&subset=cyrillic">
+<style>
+:root{--paper:#F6F1EE;--oats:#EFE3D3;--ink:#2A2320;--soft:#6B5F58;--accent:#6B4C63;--deep:#3E2A3C;--asoft:#E7DAE1;--line:#DED2C9;--stage:#E9E3DD}
+*{box-sizing:border-box}
+body{margin:0;background:var(--stage);font-family:Montserrat,system-ui,sans-serif;color:var(--ink)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+input{font:inherit;color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding:32px 14px 90px}
+h1{font-size:30px;font-weight:800;margin:0 0 8px}
+h2{font-size:24px;font-weight:800;margin:0 0 6px}
+.lead{font:400 16px/1.5 'PT Serif',Georgia,serif;color:var(--soft);max-width:740px;margin:0}
+.jump{display:flex;gap:10px;margin:18px 0 0;flex-wrap:wrap}
+.jump a{border:1px solid var(--accent);color:var(--accent);border-radius:20px;padding:7px 16px;font-size:13px;font-weight:700;text-decoration:none}
+.sec{margin-top:56px;padding-top:26px;border-top:1px solid var(--line)}
+.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.entries{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:18px 0 0;max-width:820px}
+.entries div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 16px;font:400 14px/1.45 'PT Serif',Georgia,serif;color:var(--soft)}
+.entries b{display:block;font:700 13px Montserrat;color:var(--ink);margin-bottom:4px}
+
+.phone{width:min(375px,100%);height:760px;background:var(--paper);border:9px solid #2A2320;border-radius:42px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.pbody{flex:1;overflow-y:auto;position:relative}
+.pbody::-webkit-scrollbar{display:none}
+.tabbar{flex:none;display:flex;border-top:1px solid var(--line);background:var(--paper);padding-bottom:6px}
+.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 4px;font-size:11px;font-weight:600;color:var(--soft);position:relative}
+.tabbar button.on{color:var(--accent)}
+.tabbar em{position:absolute;top:4px;left:calc(50% + 6px);background:var(--accent);color:var(--paper);font:700 10px Montserrat;border-radius:9px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.tag{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.lbl{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:22px 0 6px}
+.ttl{font-size:29px;font-weight:800;line-height:1.08;margin:8px 0 14px}
+.kbn{font-size:12px;color:var(--soft);margin:0 0 8px}
+.tot{display:flex;flex-wrap:wrap;align-items:center;gap:2px 12px;background:var(--asoft);border-radius:14px;padding:9px 12px;margin:0 0 8px;font-size:12px;color:var(--deep)}
+.tot span{flex:1 0 100%;font-weight:600}
+.tot b{font-size:15px;font-weight:800}
+.tot i{font-style:normal;font-weight:700}
+.tmr{position:absolute;left:50%;transform:translateX(-50%);bottom:68px;z-index:9;display:flex;align-items:center;gap:8px;background:var(--deep);color:var(--paper);border-radius:22px;padding:6px 6px 6px 14px;font:700 13px Montserrat;white-space:nowrap;cursor:pointer}
+.tmr.ck{bottom:84px;background:#2A1B29;border:1px solid var(--asoft)}
+.tmr small{font:500 11px Montserrat;color:var(--asoft);max-width:110px;overflow:hidden;text-overflow:ellipsis}
+.tmr button{width:22px;height:22px;border-radius:50%;background:rgba(246,241,238,.18);display:flex;align-items:center;justify-content:center;flex:none}
+.tmr.done{background:var(--accent)}
+
+.C-home{padding:22px 18px 24px}
+.mast{display:flex;justify-content:space-between;align-items:baseline}
+.mast b{font-size:38px;font-weight:800;letter-spacing:-.02em}
+.mast span{font-size:13px;color:var(--soft);font-weight:600}
+.search{display:flex;align-items:center;gap:8px;margin-top:12px;border:1px solid var(--line);border-radius:22px;padding:9px 14px;background:#FBF8F5;color:var(--soft)}
+.search input{border:0;background:none;outline:none;flex:1;min-width:0;font-size:14px;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin:14px 0 16px}
+.chip{border:1px solid var(--line);border-radius:16px;padding:7px 8px;font-size:12px;font-weight:600}
+.chip.on{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.hero{border-radius:20px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;background:var(--deep);color:var(--paper);cursor:pointer}
+.hero small{color:var(--asoft);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:11px}
+.hero h5{font-size:21px;font-weight:800;line-height:1.1;margin:6px 0 4px}
+.hero p{margin:0;font-size:13px;color:var(--asoft)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tl{border-radius:20px;padding:12px;font-weight:800;font-size:15px;line-height:1.2;position:relative;cursor:pointer}
+.tl small{display:block;font:500 12px Montserrat;color:var(--soft);margin-top:4px}
+.tl .im{display:flex;justify-content:center;margin-bottom:6px}
+.tl.wide{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding-right:56px}
+.tl.wide .im{margin:0}
+.fv{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;background:rgba(246,241,238,.88);display:flex;align-items:center;justify-content:center;color:var(--accent);z-index:1}
+.tl.wide .fv{top:50%;margin-top:-15px}
+.fv.on svg{fill:var(--accent)}
+.empty{text-align:center;padding:40px 10px;color:var(--soft)}
+.empty b{display:block;color:var(--ink);font-size:17px;margin-bottom:6px}
+.empty span{font:400 14px/1.4 'PT Serif',Georgia,serif}
+
+.C-hero{height:290px;display:flex;align-items:center;justify-content:center;position:relative}
+.rb{position:absolute;top:16px;width:38px;height:38px;border-radius:50%;background:var(--paper);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.rb.l{left:16px}
+.rb.r1{right:16px}
+.rb.r2{right:60px}
+.rb.on svg{fill:var(--accent);color:var(--accent)}
+.chipt{position:absolute;left:20px;bottom:44px;background:var(--paper);border-radius:14px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--accent)}
+.C-body{background:var(--paper);border-radius:28px 28px 0 0;margin-top:-28px;padding:26px 22px 30px;position:relative}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 8px}
+.tiles div{background:var(--oats);border-radius:14px;padding:10px 4px;text-align:center}
+.tiles b{display:block;font-size:20px;font-weight:800}
+.tiles span{font-size:11px;font-weight:600;color:var(--soft)}
+.vid{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--accent);color:var(--accent);border-radius:22px;padding:9px 16px;font:700 13px Montserrat;text-decoration:none;margin:2px 0 6px}
+.ctl{display:flex;gap:10px;margin:10px 0 4px}
+.pill{flex:1.3;border:1px solid var(--line);border-radius:22px;padding:7px 8px 7px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:13px;font-weight:600;min-width:0}
+.pill .sp{display:flex;align-items:center;gap:7px}
+.pill .sp button{width:20px;height:20px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);font:700 12px/1 Montserrat;display:flex;align-items:center;justify-content:center;padding:0}
+.btn{flex:1;background:var(--accent);color:var(--paper);border-radius:22px;padding:10px 12px;font:700 13px Montserrat;display:flex;align-items:center;justify-content:center;gap:7px;text-align:center}
+.btn.out{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn2{width:100%;border:1px dashed var(--accent);color:var(--accent);border-radius:16px;padding:11px;font:700 13px Montserrat;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+.btn2.ok{border-style:solid;background:var(--asoft)}
+.ig{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font:400 16px/1.25 'PT Serif',Georgia,serif;cursor:pointer}
+.ig .bx{width:20px;height:20px;border:2px solid var(--accent);border-radius:5px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font:700 13px Montserrat}
+.ig .q{font:700 13px Montserrat;color:var(--accent);width:78px;flex:none}
+.ig.done{color:#9A8F88;text-decoration:line-through}
+.ig.done .bx{background:var(--accent)}
+.ig.done .bx::after{content:'✓'}
+.ig small{display:block;font:500 11px Montserrat;color:var(--soft);text-decoration:none}
+.stp{list-style:none;margin:0;padding:0;counter-reset:s}
+.stp li{counter-increment:s;display:flex;gap:12px;font:400 16px/1.45 'PT Serif',Georgia,serif;margin-bottom:12px}
+.stp li::before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;background:var(--asoft);color:var(--deep);font:700 13px Montserrat;display:flex;align-items:center;justify-content:center}
+.promo{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-top:10px;background:#FBF8F5;cursor:pointer}
+.promo b{display:block;font-size:13px}
+.promo span{font-size:12px;color:var(--soft)}
+.promo.tg{background:var(--deep);color:var(--paper);border-color:var(--deep)}
+.promo.tg span{color:var(--asoft)}
+.toast{position:absolute;left:50%;transform:translateX(-50%);bottom:124px;background:var(--ink);color:var(--paper);border-radius:18px;padding:9px 16px;font-size:13px;font-weight:600;white-space:nowrap;z-index:20}
+.sbg{position:absolute;inset:0;background:rgba(42,35,32,.5);z-index:10}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:24px 24px 0 0;padding:12px 20px 22px;z-index:11}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.sh-t{font-size:18px;font-weight:800;margin-bottom:12px}
+.og{display:flex;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.og-i{width:112px;display:flex;align-items:center;justify-content:center;flex:none}
+.og-t{padding:10px 12px;font-size:12px;color:var(--soft);display:flex;flex-direction:column;gap:3px;min-width:0}
+.og-t b{font-size:14px;color:var(--ink);line-height:1.2}
+.url{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:14px;padding:9px 12px;margin-top:12px;font-size:12px;color:var(--soft);background:#FBF8F5}
+.url span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.url button{flex:none;color:var(--accent);font:700 12px Montserrat;display:flex;align-items:center;gap:5px}
+.note{font:italic 400 12px/1.4 'PT Serif',Georgia,serif;color:var(--soft);margin:8px 0 12px}
+.sh-b{display:flex;gap:10px}
+.cook{background:var(--deep);color:var(--paper);flex:1;display:flex;flex-direction:column;padding:20px 22px 24px}
+.ck-top{display:flex;justify-content:space-between;align-items:center}
+.ck-top .rb{position:static;background:rgba(246,241,238,.14);color:var(--paper)}
+.awake{font-size:12px;font-weight:700;color:var(--asoft);border:1px solid rgba(231,218,225,.4);border-radius:14px;padding:5px 12px}
+.ck-prog{display:flex;gap:5px;margin:20px 0 10px}
+.ck-prog i{flex:1;height:4px;border-radius:2px;background:rgba(246,241,238,.2)}
+.ck-prog i.on{background:var(--asoft)}
+.ck-n{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--asoft)}
+.ck-t{font:400 27px/1.35 'PT Serif',Georgia,serif;margin:22px 0 18px;flex:1}
+.timer{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;border:1px solid var(--asoft);color:var(--asoft);border-radius:22px;padding:9px 16px;font:700 14px Montserrat;margin-bottom:18px}
+.testt{align-self:flex-start;font:600 12px Montserrat;color:var(--asoft);text-decoration:underline;margin:-6px 0 16px}
+.ck-b{display:flex;gap:10px}
+.ck-b .btn{background:var(--paper);color:var(--deep);padding:14px}
+.ck-b .btn.out{background:transparent;color:var(--paper);border-color:var(--asoft)}
+.ck-b .btn[disabled]{opacity:.35}
+.lhead{padding:22px 18px 6px}
+.lhead b{font-size:26px;font-weight:800;display:block}
+.lhead span{font-size:13px;color:var(--soft)}
+.lbody{padding:6px 18px 24px}
+.fcard{display:flex;align-items:center;gap:12px;border-radius:18px;padding:10px 14px 10px 10px;margin-bottom:10px;cursor:pointer;font-weight:800;font-size:15px;line-height:1.2}
+.fcard small{display:block;font:500 12px Montserrat;color:var(--soft);margin-top:3px}
+.clr{margin:14px auto 0;display:block;font:700 13px Montserrat;color:var(--accent)}
+
+.reel{flex:1;background:#2A2320;position:relative;display:flex;flex-direction:column}
+.reel-v{flex:1;display:flex;align-items:center;justify-content:center;background:#5A4152;margin:0}
+.reel-sub{position:absolute;left:0;right:0;top:60%;text-align:center;color:#fff;font:800 30px/1.15 Montserrat;text-shadow:0 2px 8px rgba(0,0,0,.45)}
+.reel-cta{position:absolute;left:18px;right:18px;bottom:26px;background:rgba(42,35,32,.78);color:#fff;border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.35}
+.reel-cta b{display:block;font-size:14px}
+.reel-rail{position:absolute;right:14px;bottom:130px;display:flex;flex-direction:column;gap:16px;color:#fff}
+
+.story{display:flex;flex-wrap:wrap;gap:30px 26px;padding:18px 4px 12px}
+.st1{flex:none;width:270px;scroll-snap-align:start}
+.sn{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-weight:800;font-size:15px}
+.sn b{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--paper);display:flex;align-items:center;justify-content:center;font-size:13px}
+.miniw{width:270px;height:548px;position:relative}
+.mini{width:375px;height:760px;transform:scale(.72);transform-origin:0 0;pointer-events:none;position:absolute;left:0;top:0}
+.mini .phone{width:375px}
+.sd{font:400 14px/1.45 'PT Serif',Georgia,serif;color:var(--soft);margin:12px 0 0}
+.proto{display:flex;gap:36px;flex-wrap:wrap;align-items:flex-start;margin-top:22px}
+.hints{flex:1;min-width:240px;max-width:420px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.hints b{display:block;font-size:15px;margin-bottom:8px}
+.hints ol{margin:0;padding-left:20px;font:400 15px/1.5 'PT Serif',Georgia,serif;color:var(--soft)}
+.hints li{margin-bottom:6px}
+.rst{margin-top:10px;border:1px solid var(--accent);color:var(--accent);border-radius:18px;padding:6px 14px;font:700 12px Montserrat}
+.devbox{margin-top:30px}
+.cap{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:0 0 10px}
+.fitw{overflow:hidden;border-radius:12px}
+.fitin{transform-origin:0 0;display:block;width:max-content}
+
+.browser{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;width:1200px}
+.bbar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#E9E3DD;border-bottom:1px solid var(--line)}
+.bbar i{width:11px;height:11px;border-radius:50%;background:#CFC4BB}
+.bbar .url2{margin-left:12px;flex:1;max-width:420px;background:var(--paper);border-radius:14px;padding:5px 14px;font-size:12px;color:var(--soft)}
+.site{background:var(--paper);color:var(--ink)}
+.dsk{width:1198px;height:740px;overflow:hidden}
+.sh{display:flex;align-items:center;gap:28px;padding:16px 40px;border-bottom:1px solid var(--line)}
+.sh .logo{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.sh nav{display:flex;gap:22px;font-size:14px;font-weight:600;color:var(--soft)}
+.sh nav .on{color:var(--ink);border-bottom:2px solid var(--accent);padding-bottom:4px}
+.sh nav em,.th2 nav em{font:700 10px Montserrat;font-style:normal;background:var(--accent);color:var(--paper);border-radius:9px;padding:2px 6px;margin-left:4px}
+.th2 nav .on{color:var(--ink);border-bottom:2px solid var(--accent);padding-bottom:4px}
+.sh .search{margin:0 0 0 auto;width:300px}
+.dmain{display:grid;grid-template-columns:220px 1fr;gap:36px;padding:30px 40px 44px}
+.side .item{display:flex;justify-content:space-between;padding:9px 12px;border-radius:12px;font-size:14px;font-weight:600;margin-bottom:2px}
+.side .item.on{background:var(--accent);color:var(--paper)}
+.side .item span{opacity:.7}
+.dhero{display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--deep);color:var(--paper);border-radius:24px;padding:20px 36px;margin-bottom:16px}
+.dhero small{color:var(--asoft);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+.dhero h3{font-size:34px;font-weight:800;line-height:1.1;margin:8px 0}
+.dhero p{margin:0 0 14px;color:var(--asoft)}
+.dhero .btn{flex:none;background:var(--paper);color:var(--deep);display:inline-flex;padding:10px 22px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.drec{display:grid;grid-template-columns:340px 1fr;gap:36px;padding:24px 40px 0}
+.drec .bigimg{height:200px}
+.bigimg{height:320px;border-radius:24px;display:flex;align-items:center;justify-content:center;position:relative}
+.bigimg .chipt{bottom:18px}
+.crumb{font-size:12px;color:var(--soft);font-weight:600;margin-bottom:14px}
+.drec .ttl{font-size:34px;margin:6px 0 4px}
+.acts{display:flex;gap:10px;align-items:center;margin:4px 0 6px}
+.rbtn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--accent)}
+.trow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.two2{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:20px}
+.more{display:flex;align-items:center;gap:8px;margin-top:18px;font-size:12px;font-weight:700;color:var(--soft)}
+.promos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.g4{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tfr{background:#2A2320;padding:14px;border-radius:30px;width:max-content}
+.tabsite{width:820px;height:880px;border-radius:18px;overflow:hidden}
+.th2{display:flex;align-items:center;gap:20px;padding:16px 28px;border-bottom:1px solid var(--line)}
+.th2 .logo{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.th2 .search{margin:0 0 0 auto;width:250px}
+.tbody{padding:22px 28px 30px}
+.g3t{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.trec{display:grid;grid-template-columns:300px 1fr;gap:28px}
+.trec .bigimg{height:250px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:6px}
+.only .wrap>h1,.only .wrap>.lead,.only .jump{display:none}
+.only .sec{margin-top:0;border-top:0}
+.only .story{flex-wrap:wrap;overflow:visible}
+@media (max-width:520px){.wrap{padding:24px 10px 80px}h1{font-size:25px}}
+
+html,body{margin:0}
+body{background:var(--paper)}
+#phone.app{display:block;min-height:100vh;min-height:100dvh;background:var(--paper);position:relative;padding-bottom:72px}
+.app .pbody{overflow:visible}
+.app .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding-bottom:max(6px,env(safe-area-inset-bottom))}
+.app .tmr{position:fixed;bottom:80px;z-index:35}
+.app .tmr.ck{bottom:100px}
+.app .toast{position:fixed;bottom:136px;z-index:60}
+.app .sbg{position:fixed;inset:0;z-index:50}
+.app .sheet{position:fixed;left:50%;right:auto;bottom:0;transform:translateX(-50%);width:min(100%,520px);z-index:51;padding-bottom:max(22px,env(safe-area-inset-bottom))}
+.app .cook{position:fixed;inset:0;z-index:40;padding-left:max(22px,calc((100vw - 640px)/2));padding-right:max(22px,calc((100vw - 640px)/2))}
+.testt{display:none}
+.app.wide{padding-bottom:0}
+.app.wide .tabbar{display:none}
+.app.wide .tmr{bottom:24px}
+.app.wide .toast{bottom:80px}
+.shw{border-bottom:1px solid var(--line)}
+.shw .sh{max-width:1240px;margin:0 auto;border-bottom:0}
+.sh .logo{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.sh nav{display:flex;gap:22px;align-items:center}
+.sh nav button,.sh nav a{font-size:14px;font-weight:600;color:var(--soft);text-decoration:none;padding-bottom:4px;border-bottom:2px solid transparent}
+.sh nav .on{color:var(--ink);border-bottom-color:var(--accent)}
+.wmain{max-width:1240px;margin:0 auto;padding:0 40px}
+.wh{display:grid;grid-template-columns:220px 1fr;gap:36px;padding:28px 0 40px}
+.side .item{width:100%}
+.wchips{display:none}
+.wr{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px 24px;padding:16px 0}
+.w-media{grid-column:1/5;grid-row:1;height:140px;border-radius:24px;display:flex;align-items:center;justify-content:center;position:relative}
+.w-media .chipt{bottom:12px;left:14px}
+.w-head{grid-column:5/13;grid-row:1}
+.w-kb{grid-column:1/5;grid-row:2;align-self:start}
+.w-ing{grid-column:5/9;grid-row:2/5}
+.w-steps{grid-column:9/13;grid-row:2/5}
+.w-promos{grid-column:1/5;grid-row:3;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-self:start}
+.w-promos .promo{padding:10px 12px;align-items:flex-start}
+.w-more{grid-column:1/5;grid-row:4;display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:12px;font-weight:700;color:var(--soft);align-self:start}
+.wr .ig{padding:6px 0;font-size:15px}
+.wr .ig .bx{width:18px;height:18px}
+.wr .stp li{font-size:15px;line-height:1.4;margin-bottom:8px}
+.wr .btn2{margin-top:10px;padding:9px}
+.wr .ttl{font-size:34px;margin:6px 0 4px}
+.wr .crumb button{color:var(--soft);font-weight:600}
+.rbtn.on svg{fill:var(--accent)}
+.wcol{max-width:560px;margin:0 auto;padding-bottom:30px}
+@media (max-width:999px){
+.shw .sh{padding:14px 28px;gap:20px}
+.sh .search{width:230px}
+.wmain{padding:0 28px}
+.wh{grid-template-columns:1fr;padding-top:20px}
+.side{display:none}
+.wchips{display:flex}
+.w-media{grid-column:1/5;grid-row:1/3;height:auto;min-height:230px}
+.w-head{grid-column:5/13;grid-row:1}
+.w-kb{grid-column:5/13;grid-row:2}
+.w-ing{grid-column:1/7;grid-row:3}
+.w-steps{grid-column:7/13;grid-row:3}
+.w-promos{grid-column:1/13;grid-row:4}
+.w-more{grid-column:1/13;grid-row:5}
+.wr .ttl{font-size:28px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M8 11l4 4 4-4M5 20h14"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M21 4L3 11l6 2 2 6 3-4 4 3z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></symbol>
+<symbol id="s-jar" viewBox="0 0 300 260"><path d="M90,74 L90,208 Q90,224 106,224 L194,224 Q210,224 210,208 L210,74 Z" fill="#fff" fill-opacity=".55" stroke="#6B4C63" stroke-width="3"/><path d="M94,142 Q150,116 206,142 L206,206 Q206,219 193,219 L107,219 Q94,219 94,206 Z" fill="#EFE3D3"/><circle cx="118" cy="128" r="8" fill="#4E4468"/><circle cx="132" cy="122" r="8" fill="#4E4468"/><circle cx="124" cy="112" r="8" fill="#4E4468"/><circle cx="168" cy="122" r="11" fill="#E8CC86" stroke="#C7A756" stroke-width="1.2"/><path d="M180,126 q11,-16 22,0 q-11,22 -22,0z" fill="#B4586B"/><rect x="80" y="52" width="140" height="20" rx="9" fill="#3E2A3C"/></symbol>
+<symbol id="s-cas" viewBox="0 0 300 260"><rect x="54" y="60" width="192" height="156" rx="16" fill="#fff" fill-opacity=".55" stroke="#6B4C63" stroke-width="3"/><rect x="66" y="72" width="168" height="132" rx="10" fill="#F3EAD8"/><g fill="#C96B5A"><rect x="85" y="95" width="14" height="14" rx="3"/><rect x="150" y="85" width="14" height="14" rx="3"/><rect x="195" y="110" width="14" height="14" rx="3"/><rect x="110" y="150" width="14" height="14" rx="3"/><rect x="175" y="165" width="14" height="14" rx="3"/></g><g fill="#D9612F"><path d="M100,120 l12,-5 6,10 -10,7 -8,-5z"/><path d="M180,135 l12,-4 6,9 -9,8 -9,-5z"/><path d="M140,175 l12,-4 7,9 -10,7 -9,-4z"/></g><g fill="#E8C34A"><circle cx="120" cy="100" r="3"/><circle cx="160" cy="120" r="3"/><circle cx="90" cy="145" r="3"/><circle cx="205" cy="150" r="3"/><circle cx="150" cy="190" r="3"/><circle cx="185" cy="90" r="3"/></g><g stroke="#F0CE6A" stroke-width="2.4" stroke-linecap="round" opacity=".9"><path d="M80,80 l10,22"/><path d="M105,76 l9,24"/><path d="M135,84 l8,20"/><path d="M165,78 l9,22"/><path d="M195,86 l8,20"/><path d="M215,100 l7,18"/></g></symbol>
+<symbol id="s-bowl" viewBox="0 0 300 260"><ellipse cx="150" cy="150" rx="118" ry="92" fill="#fff" fill-opacity=".55" stroke="#6B4C63" stroke-width="3"/><ellipse cx="150" cy="150" rx="98" ry="74" fill="#EDF1DF"/><g fill="#8FAE63" opacity=".85"><path d="M90,110 q20,-24 44,-6 q-10,24 -36,22 q-14,-4 -8,-16z"/><path d="M190,190 q24,-14 38,10 q-18,18 -40,8 q-10,-10 2,-18z"/><path d="M95,185 q22,-10 32,12 q-16,16 -36,4 q-8,-8 4,-16z"/></g><g fill="#7A4432"><ellipse cx="140" cy="135" rx="20" ry="13"/><ellipse cx="172" cy="120" rx="17" ry="12"/><ellipse cx="155" cy="160" rx="19" ry="12"/><ellipse cx="185" cy="150" rx="15" ry="10"/></g><g fill="#F0CE6A" opacity=".85"><ellipse cx="140" cy="130" rx="9" ry="5"/><ellipse cx="170" cy="117" rx="7" ry="4"/><ellipse cx="183" cy="147" rx="6" ry="4"/></g><path d="M110,205 l20,-10 10,20 -18,10z" fill="#C8503E"/><g fill="none" stroke="#9B5E82" stroke-width="2"><ellipse cx="205" cy="195" rx="10" ry="6"/><ellipse cx="220" cy="180" rx="8" ry="5"/></g></symbol>
+<symbol id="s-pep" viewBox="0 0 300 260"><path d="M60,90 Q60,56 100,56 Q140,56 140,90 L140,170 Q140,200 100,200 Q60,200 60,170 Z" fill="#D9612F" stroke="#B94E22" stroke-width="2"/><path d="M72,96 Q72,68 100,68 Q128,68 128,96 L128,164 Q128,188 100,188 Q72,188 72,164 Z" fill="#F3EAD8"/><path d="M160,90 Q160,56 200,56 Q240,56 240,90 L240,170 Q240,200 200,200 Q160,200 160,170 Z" fill="#E6793E" stroke="#B94E22" stroke-width="2"/><path d="M172,96 Q172,68 200,68 Q228,68 228,96 L228,164 Q228,188 200,188 Q172,188 172,164 Z" fill="#F3EAD8"/><g fill="#E3C98C"><rect x="80" y="110" width="13" height="13" rx="3"/><rect x="100" y="130" width="13" height="13" rx="3"/><rect x="180" y="115" width="13" height="13" rx="3"/><rect x="205" y="135" width="13" height="13" rx="3"/></g><circle cx="100" cy="155" r="14" fill="#C8503E"/><path d="M182,160 q18,-16 36,0 q-18,14 -36,0z" fill="#FBF6EC" stroke="#E0D6BF" stroke-width="1.2"/></symbol>
+<symbol id="s-buck" viewBox="0 0 300 260"><rect x="60" y="64" width="180" height="148" rx="20" fill="#fff" fill-opacity=".55" stroke="#6B4C63" stroke-width="3"/><rect x="72" y="76" width="156" height="124" rx="14" fill="#D9BB93"/><g fill="#EAD2A6" stroke="#CDA96F" stroke-width="1.2"><ellipse cx="108" cy="112" rx="17" ry="11"/><ellipse cx="178" cy="102" rx="16" ry="11"/><ellipse cx="145" cy="175" rx="17" ry="11"/></g><g fill="#E08A3C"><path d="M92,150 l9,-3 4,8 -8,5 -6,-6z"/><path d="M198,150 l9,-2 3,9 -9,4 -5,-7z"/></g><circle cx="160" cy="90" r="10" fill="#C15B4A"/><circle cx="88" cy="185" r="10" fill="#C15B4A"/></symbol>
+<symbol id="s-brn" viewBox="0 0 300 260"><rect x="60" y="64" width="180" height="148" rx="20" fill="#fff" fill-opacity=".55" stroke="#6B4C63" stroke-width="3"/><rect x="72" y="76" width="156" height="124" rx="14" fill="#4A2E22"/><g fill="#6B4530" opacity=".7"><ellipse cx="100" cy="98" rx="15" ry="7"/><ellipse cx="150" cy="90" rx="19" ry="6"/><ellipse cx="200" cy="105" rx="14" ry="7"/><ellipse cx="105" cy="135" rx="17" ry="7"/><ellipse cx="165" cy="145" rx="16" ry="7"/><ellipse cx="205" cy="160" rx="13" ry="6"/></g><g fill="#241209"><rect x="120" y="110" width="10" height="8" rx="2"/><rect x="160" y="127" width="9" height="7" rx="2"/><rect x="133" y="155" width="9" height="7" rx="2"/><rect x="183" y="93" width="9" height="7" rx="2"/></g></symbol>
+</defs></svg>
+<div id="phone" class="app"></div>
+<button id="resetP" hidden></button>
+<noscript>Для работы сайта включи JavaScript. PDF-сборник: <a href="Fiolet-recipes.pdf">скачать</a>.</noscript>
+<script>
+const PU=['порцию','порции','порций'];
+const R=[
+{id:'01',cat:'Завтраки',cl:'Завтрак',t:'Ленивая овсянка',k:369,p:13,f:10,c:63,kn:'на 1 порцию',y:1,pu:PU,pl:'Порции',s:'jar',bg:'#E7DAE1',slug:'lenivaya-ovsyanka',reel:'https://www.instagram.com/reel/Ddnip2QoHQF/',
+ ings:[[40,'г','Геркулес быстрой варки'],[1,'ст.л.','Семена чиа'],[1.5,'ч.л.','Мёд'],[100,'мл','Молоко'],[1,'ч.л.','Какао или арахисовая паста'],[null,'по вкусу','Банан, клубника, голубика']],
+ steps:['Смешай геркулес, семена чиа, мёд и молоко в банке или контейнере.','Добавь какао или арахисовую пасту, перемешай до однородности.','Убери в холодильник на ночь.','Утром достань и укрась бананом, клубникой и голубикой.']},
+{id:'04',cat:'Завтраки',cl:'Завтрак',t:'Творожная запеканка с ветчиной',sh:'Творожная запеканка',k:455,p:50,f:21,c:18,kn:'на 1 порцию',y:1,pu:PU,pl:'Порции',s:'cas',bg:'#EFE3D3',slug:'tvorozhnaya-zapekanka',reel:'https://www.instagram.com/reel/Dd-1JeEIC2y/',
+ ings:[[2,'шт','Яйца','яйца'],[120,'г','Зернистый творог'],[100,'г','Ветчина 3%'],[100,'г','Болгарский перец'],[40,'г','Кукуруза'],[20,'г','Лёгкий сыр 15%','сыр лёгкий 15%']],
+ steps:['Нарежь ветчину и перец небольшими кубиками.','Выложи творог в форму для запекания, разбей туда яйца, добавь соль и специи, перемешай.','Добавь ветчину, перец и кукурузу, перемешай ещё раз.','Сверху посыпь тёртым сыром.','Запекай в разогретой до 180°C духовке 45 минут.']},
+{id:'05',cat:'Ужины',cl:'Ужин',t:'Салат «Биг Тейсти»',k:809,p:112,f:31,c:23,kn:'на 1 порцию',y:1,pu:PU,pl:'Порции',s:'bowl',bg:'#DDE3D0',slug:'salat-big-teysti',reel:'https://www.instagram.com/reel/DeD8NljThVb/',
+ ings:[[400,'г','Говяжья вырезка'],[1,'шт','Помидор','помидор'],[30,'г','Корнишоны'],[1,'пучок','Салат листовой'],[40,'г','Лёгкий сыр 15%','сыр лёгкий 15%'],[120,'г','Греческий йогурт 2%'],[3,'ч.л.','Кетчуп'],[2,'ч.л.','Дижонская горчица'],[0.5,'шт','Красный лук']],
+ steps:['Прокрути вырезку в фарш и обжарь на сковороде без масла до готовности. За пару минут до конца добавь сыр, чтобы он расплавился прямо в фарш.','Параллельно нарежь листья салата, помидор и красный лук, выложи в салатницу.','Для соуса мелко нарежь корнишоны и смешай с греческим йогуртом, дижонской горчицей и кетчупом.','Выложи к овощам жареный фарш с сыром и залей соусом сверху.']},
+{id:'03',cat:'Десерты',cl:'Десерт',t:'Шоколадный брауни',k:444,p:6,f:29,c:43,kn:'на 100 г',per100:true,y:2,pu:['контейнер','контейнера','контейнеров'],pl:'Контейнеры',s:'brn',bg:'#E3D2C8',slug:'shokoladnyy-brauni',reel:'https://www.instagram.com/reel/Dd0eUViz6_t/',
+ ings:[[1,'шт','Тёмный шоколад'],[1,'шт','Молочный шоколад'],[80,'г','Мука'],[5,'г','Разрыхлитель'],[2,'ст.л.','Какао'],[150,'г','Сахар'],[160,'г','Сливочное масло'],[3,'г','Ванилин'],[3,'шт','Яйца','яйца']],
+ steps:['Разбей яйца, добавь сахар, перемешай.','Смешай муку с какао, разрыхлителем и ванилином.','Просей мучную смесь к яйцам, перемешай.','В отдельной посуде растопи вместе масло и оба шоколада.','Влей шоколадную массу в тесто, перемешай.','Разлей массу по контейнерам.','Выпекай в разогретой до 180°C духовке 30 минут.']},
+{id:'02',cat:'ПП',cl:'ПП',t:'Гречка с курицей',k:860,p:94,f:30,c:54,kn:'на 1 порцию',y:1,pu:PU,pl:'Порции',s:'buck',bg:'#F2E3C6',slug:'grechka-s-kuritsey',reel:'https://www.instagram.com/reel/Ddvwg5Go2i2/',
+ ings:[[200,'г','Куриная грудка','куриная грудка'],[70,'г','Гречневая крупа'],[0.5,'шт','Лук репчатый'],[0.5,'шт','Морковь'],['2-3','шт','Помидор'],[140,'мл','Вода'],[null,'по вкусу','Специи'],[2,'ст.л.','Греческий йогурт'],[1,'шт','Яйцо','яйца'],[40,'г','Лёгкий сыр 15%','сыр лёгкий 15%']],
+ steps:['Мелко нарежь курицу. Засыпь гречку в контейнер, сверху выложи курицу и специи.','Мелко нарежь лук и морковь, добавь вместе с кружочками помидора.','Залей водой (ровно в 2 раза больше, чем гречки).','В отдельной ёмкости смешай яйцо, йогурт и тёртый сыр, залей соусом сверху.','Разогрей духовку до 180°C и поставь на 45 минут.']},
+{id:'06',cat:'ПП',cl:'ПП',t:'Фаршированные перцы с курицей',sh:'Фаршированные перцы',k:494,p:57,f:23,c:16,kn:'на 1 порцию (2 половинки)',y:2,pu:PU,pl:'Порции',s:'pep',bg:'#F0D9CF',slug:'farshirovannye-pertsy',reel:'https://www.instagram.com/reel/DeGfT3oTQ1I/',
+ ings:[[2,'шт','Болгарский перец'],[250,'г','Куриная грудка','куриная грудка'],[3,'шт','Яйца','яйца'],[50,'г','Лёгкий сыр 15%','сыр лёгкий 15%'],[100,'г','Моцарелла'],[1,'шт','Помидор','помидор']],
+ steps:['Разрежь перцы пополам вдоль, удали семена и перегородки.','Нарежь курицу мелкими кубиками, помидор кружочками, моцареллу половинками шариков.','Разбей яйца в миску, посоли, поперчи и взболтай вилкой.','Разложи курицу по половинкам перца, сверху положи кружочки помидора и половинки моцареллы.','Залей каждую половинку яичной смесью, посыпь тёртым сыром.','Запекай в разогретой до 180°C духовке 35 минут под фольгой, затем ещё 10 минут без фольги, чтобы верх подрумянился.']}
+];
+R.forEach(r=>r.num=String(Number(r.id)));
+const get=id=>R.find(r=>r.id===id);
+const I=(n,s)=>'<svg class="ic" style="width:'+(s||22)+'px;height:'+(s||22)+'px" viewBox="0 0 24 24"><use href="#i-'+n+'"/></svg>';
+const ic=(s,w)=>'<svg viewBox="0 0 300 260" width="'+w+'"><use href="#s-'+s+'"/></svg>';
+const fmt=v=>String(Math.round(v*10)/10).replace('.',',');
+const plu=(n,f)=>{const a=Math.abs(n)%100,d=a%10;return a>10&&a<20?f[2]:d>1&&d<5?f[1]:d===1?f[0]:f[2]};
+const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+const qty=(v,u,f)=>typeof v==='number'?fmt(v*f)+' '+u:(v?v+' ':'')+u;
+const stem=q=>{q=q.trim().toLowerCase();return q.length>5?q.slice(0,-2):q.length>3?q.slice(0,-1):q};
+const match=(r,q)=>!q||(r.t+' '+r.ings.map(i=>i[2]).join(' ')).toLowerCase().includes(stem(q));
+const mkS=o=>Object.assign({screen:'home',cat:'Все',q:'',rid:'04',n:1,chk:{},fav:new Set(['02']),list:{},step:0,sheet:false,from:'home',copied:false},o||{});
+
+const tile=(r,s,wide)=>'<div class="tl'+(wide?' wide':'')+'" style="background:'+r.bg+'" data-act="open" data-id="'+r.id+'"><button class="fv'+(s.fav.has(r.id)?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',17)+'</button><div class="im">'+ic(r.s,wide?78:92)+'</div><div>'+(r.sh||r.t)+'<small>'+r.k+' ккал'+(r.per100?' на 100 г':'')+'</small></div></div>';
+const heroB=r=>'<div class="hero" data-act="open" data-id="'+r.id+'"><div><small>Новое</small><h5>'+r.t+'</h5><p>'+r.k+' ккал · '+r.p+' г белка</p></div>'+ic(r.s,130)+'</div>';
+function gridHTML(s){
+  const vis=R.filter(r=>(s.cat==='Все'||r.cat===s.cat)&&match(r,s.q));
+  if(!vis.length)return '<div class="empty"><b>Ничего не нашлось</b><span>Попробуй «курица», «творог» или «шоколад».</span></div>';
+  const hero=s.cat==='Все'&&!s.q;
+  const rest=hero?vis.filter(r=>r.id!=='05'):vis;
+  return (hero?heroB(get('05')):'')+'<div class="grid2">'+rest.map((r,i)=>tile(r,s,rest.length%2===1&&i===rest.length-1)).join('')+'</div>';
+}
+const listCount=s=>Object.keys(s.list).length;
+const tabbar=(s,act)=>'<div class="tabbar">'+[['home','book','Рецепты'],['fav','heart','Избранное'],['list','list','Список']].map(([k,i,t])=>'<button class="'+(act===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+I(i,22)+'<span>'+t+'</span>'+(k==='list'&&listCount(s)?'<em>'+listCount(s)+'</em>':'')+'</button>').join('')+'</div>';
+
+const SC={};
+SC.home=s=>'<div class="pbody"><div class="C-home"><div class="mast"><b>Fiolet</b><span>6 рецептов</span></div><label class="search">'+I('search',18)+'<input class="js-q" placeholder="Курица, творог, брауни" value="'+s.q+'" autocomplete="off"></label><div class="chips">'+['Все','Завтраки','Ужины','Десерты','ПП'].map(c=>'<button class="chip'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+c+'</button>').join('')+'</div><div class="js-grid">'+gridHTML(s)+'</div></div></div>'+tabbar(s,'home');
+
+const kbTiles=r=>'<div class="tiles"><div><b>'+r.k+'</b><span>ккал</span></div><div><b>'+r.p+'</b><span>белки</span></div><div><b>'+r.f+'</b><span>жиры</span></div><div><b>'+r.c+'</b><span>углев.</span></div></div>';
+const totBox=(r,p)=>r.per100?'':'<div class="tot"><span>Всего на '+p+' '+plu(p,r.pu)+'</span><b>'+r.k*p+' ккал</b><i>Б '+r.p*p+'</i><i>Ж '+r.f*p+'</i><i>У '+r.c*p+'</i></div>';
+const stepsOl=r=>'<ol class="stp">'+r.steps.map(t=>'<li><span>'+t+'</span></li>').join('')+'</ol>';
+SC.recipe=s=>{
+  const r=get(s.rid),p=s.n,f=p/r.y,fav=s.fav.has(r.id);
+  const others=R.filter(x=>x.id!==r.id).slice(1,3);
+  const inList=s.list[r.id]!==undefined;
+  const sheet=s.sheet?'<div class="sbg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div><div class="sh-t">Поделиться рецептом</div><div class="og"><div class="og-i" style="background:'+r.bg+'">'+ic(r.s,100)+'</div><div class="og-t"><span>fiolet.github.io</span><b>'+r.t+'</b><span>'+r.k+' ккал · '+r.p+' г белка · Fiolet</span></div></div><div class="url"><span>fiolet.github.io/recipes/'+r.slug+'</span><button data-act="copy">'+I('copy',16)+(s.copied?'Скопировано':'Копировать')+'</button></div><div class="note">Так ссылка выглядит в Telegram. Адрес пример, настоящий появится после публикации.</div><div class="sh-b"><button class="btn" data-act="tgshare">'+I('send',17)+'В Telegram</button><button class="btn out" data-act="pdf">'+I('down',17)+'PDF</button></div></div>':'';
+  return '<div class="pbody"><div class="C-hero" style="background:'+r.bg+'"><button class="rb l" data-act="back" aria-label="Назад">'+I('back',20)+'</button><button class="rb r2'+(fav?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',20)+'</button><button class="rb r1" data-act="share" aria-label="Поделиться">'+I('share',20)+'</button><div class="chipt">'+r.cl+'</div>'+ic(r.s,230)+'</div><div class="C-body"><div class="tag">Рецепт №'+r.num+'</div><h3 class="ttl">'+r.t+'</h3>'+kbTiles(r)+'<p class="kbn">КБЖУ '+r.kn+'</p>'+totBox(r,p)+'<a class="vid" href="'+r.reel+'" target="_blank" rel="noopener">'+I('play',15)+'Смотреть видео в Instagram</a><div class="ctl"><div class="pill"><span>'+r.pl+'</span><span class="sp"><button data-act="step" data-id="-1" aria-label="Меньше">−</button><b>'+p+'</b><button data-act="step" data-id="1" aria-label="Больше">+</button></span></div><button class="btn" data-act="cook">Режим готовки</button></div><div class="lbl">Ингредиенты · на '+p+' '+plu(p,r.pu)+'</div>'+r.ings.map((x,i)=>'<div class="ig'+(s.chk[r.id+':'+i]?' done':'')+'" data-act="chk" data-id="'+i+'"><span class="bx"></span><span class="q">'+qty(x[0],x[1],f)+'</span><span>'+x[2]+'</span></div>').join('')+'<button class="btn2'+(inList?' ok':'')+'" data-act="addList">'+I('list',17)+(inList?'В списке покупок, обновить':'Добавить в список покупок')+'</button><div class="lbl">Способ приготовления</div>'+stepsOl(r)+'<div class="promo" data-act="pdf"><div><b>Все рецепты одним файлом</b><span>PDF-сборник Fiolet</span></div>'+I('down',20)+'</div><div class="promo tg" data-act="tgshare"><div><b>Заметки и новые рецепты</b><span>Telegram t.me/Fiolet_artem</span></div>'+I('send',20)+'</div><div class="lbl">Ещё рецепты</div><div class="grid2">'+others.map(o=>tile(o,s,false)).join('')+'</div></div></div>'+tabbar(s,'home')+sheet;
+};
+SC.cook=s=>{
+  const r=get(s.rid),i=s.step,last=r.steps.length-1,m=(r.steps[i].match(/(\d+)\s*минут/)||[])[1];
+  return '<div class="cook"><div class="ck-top"><button class="rb" data-act="exitCook" aria-label="Закрыть">'+I('close',20)+'</button><span class="awake">'+('wakeLock' in navigator?'Экран не гаснет':'Экран может погаснуть')+'</span></div><div class="ck-prog">'+r.steps.map((_,k)=>'<i class="'+(k<=i?'on':'')+'"></i>').join('')+'</div><div class="ck-n">Шаг '+(i+1)+' из '+r.steps.length+' · '+(r.sh||r.t)+'</div><div class="ck-t">'+r.steps[i]+'</div>'+(T&&T.rid===r.id&&T.step===i?'<button class="timer" data-act="timerOff">'+I('clock',18)+' <span class="js-tt">'+(T.done?'Время вышло':fmtT(T.left))+'</span> · сбросить</button>':m?'<button class="timer" data-act="timer" data-id="'+m+'">'+I('clock',18)+' Таймер '+m+' мин</button>':'')+(T&&T.rid===r.id&&T.step===i?'':'<button class="testt" data-act="timer" data-id="0.1667">Проверить звук (таймер на 10 сек)</button>')+'<div class="ck-b"><button class="btn out" data-act="prevStep"'+(i?'':' disabled')+'>Назад</button><button class="btn" data-act="nextStep">'+(i===last?'Готово':'Дальше')+'</button></div></div>';
+};
+function aggregate(s){
+  const map=new Map(),free=[];
+  Object.entries(s.list).forEach(([rid,en])=>{const r=get(rid),f=en.p/r.y;r.ings.forEach((x,i)=>{
+    if(en.skip.includes(i))return;
+    if(typeof x[0]==='number'){const key=(x[3]||x[2].toLowerCase())+'|'+x[1];const e=map.get(key)||{key,name:cap(x[3]||x[2]),u:x[1],v:0,from:[]};e.v+=x[0]*f;e.from.push({n:r.sh||r.t,q:fmt(x[0]*f)});map.set(key,e)}
+    else free.push({name:x[2],q:qty(x[0],x[1],f),from:r.sh||r.t});
+  })});
+  return {lines:[...map.values()],free};
+}
+SC.list=s=>{
+  const n=listCount(s);
+  if(!n)return '<div class="pbody"><div class="lhead"><b>Список покупок</b><span>Пока пусто</span></div><div class="empty"><b>Здесь соберутся продукты</b><span>Открой рецепт и нажми «Добавить в список покупок». Одинаковые продукты из разных рецептов сложатся вместе.</span></div></div>'+tabbar(s,'list');
+  const a=aggregate(s);
+  return '<div class="pbody"><div class="lhead"><b>Список покупок</b><span>'+n+' '+plu(n,['рецепт','рецепта','рецептов'])+', '+a.lines.length+' позиций</span></div><div class="lbody">'+a.lines.map(l=>'<div class="ig'+(s.chk['L:'+l.key]?' done':'')+'" data-act="lchk" data-id="'+l.key+'"><span class="bx"></span><span class="q">'+fmt(l.v)+' '+l.u+'</span><span>'+l.name+'<small>Для: '+l.from.map(x=>x.n+(l.from.length>1?' '+x.q+' '+l.u:'')).join(', ')+'</small></span></div>').join('')+(a.free.length?'<div class="lbl">Докупить по вкусу</div>'+a.free.map(l=>'<div class="ig" style="cursor:default"><span class="q" style="width:78px">'+l.q+'</span><span>'+l.name+'<small>Для: '+l.from+'</small></span></div>').join(''):'')+'<button class="clr" data-act="clearList">Очистить список</button></div></div>'+tabbar(s,'list');
+};
+SC.fav=s=>{
+  const fs=R.filter(r=>s.fav.has(r.id));
+  return '<div class="pbody"><div class="lhead"><b>Избранное</b><span>'+(fs.length?fs.length+' '+plu(fs.length,['рецепт','рецепта','рецептов']):'Пока пусто')+'</span></div><div class="lbody">'+(fs.length?fs.map(r=>'<div class="fcard" style="background:'+r.bg+'" data-act="open" data-id="'+r.id+'">'+ic(r.s,70)+'<div style="flex:1">'+r.t+'<small>'+r.k+' ккал'+(r.per100?' на 100 г':'')+'</small></div><button class="fv on" style="position:static" data-act="fav" data-id="'+r.id+'" aria-label="Убрать">'+I('heart',17)+'</button></div>').join(''):'<div class="empty"><b>Сердечко на карточке сохранит рецепт сюда</b><span>Избранное хранится в твоём браузере, регистрация не нужна.</span></div>')+'</div></div>'+tabbar(s,'fav');
+};
+SC.reel=s=>'<div class="reel"><div class="reel-v">'+ic('cas',250)+'</div><div class="reel-sub">Рецепт<br>по ссылке в шапке</div><div class="reel-rail">'+I('heart',26)+I('send',26)+'</div><div class="reel-cta"><b>Творожная запеканка за 5 минут</b>455 ккал и 50 г белка. Рецепт, граммы и КБЖУ по ссылке в профиле.</div></div>';
+
+const CATS=['Все','Завтраки','Ужины','Десерты','ПП'];
+const isWide=()=>window.matchMedia('(min-width:700px)').matches;
+const shareUrl=r=>location.origin+location.pathname+'#recipe/'+r.slug;
+const SC0=Object.assign({},SC);
+const gridM=gridHTML;
+const ctlB=(r,p)=>'<div class="ctl"><div class="pill"><span>'+r.pl+'</span><span class="sp"><button data-act="step" data-id="-1" aria-label="Меньше">−</button><b>'+p+'</b><button data-act="step" data-id="1" aria-label="Больше">+</button></span></div><button class="btn" data-act="cook">Режим готовки</button></div>';
+const vidB=r=>'<a class="vid" href="'+r.reel+'" target="_blank" rel="noopener">'+I('play',15)+'Смотреть видео в Instagram</a>';
+const ingB=(r,s,f)=>r.ings.map((x,i)=>'<div class="ig'+(s.chk[r.id+':'+i]?' done':'')+'" data-act="chk" data-id="'+i+'"><span class="bx"></span><span class="q">'+qty(x[0],x[1],f)+'</span><span>'+x[2]+'</span></div>').join('');
+const addB=(r,s)=>{const on=s.list[r.id]!==undefined;return '<button class="btn2'+(on?' ok':'')+'" data-act="addList">'+I('list',17)+(on?'В списке покупок, обновить':'Добавить в список покупок')+'</button>'};
+const pdfT=()=>'<a class="tl" href="Fiolet-recipes.pdf" target="_blank" rel="noopener" style="background:var(--deep);color:var(--paper);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none"><div class="im" style="color:var(--asoft);padding-top:18px">'+I('down',44)+'</div><div>PDF-сборник<small style="color:var(--asoft)">Все рецепты одним файлом</small></div></a>';
+const wHeader=s=>{const cur=s.screen==='recipe'?'home':s.screen,n=listCount(s);return '<div class="shw"><header class="sh"><button class="logo" data-act="tab" data-id="home">Fiolet</button><nav>'+[['home','Рецепты'],['fav','Избранное'],['list','Список']].map(([k,t])=>'<button class="'+(cur===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+t+(k==='list'&&n?'<em>'+n+'</em>':'')+'</button>').join('')+'<a href="https://t.me/Fiolet_artem" target="_blank" rel="noopener">Telegram</a></nav><label class="search">'+I('search',18)+'<input class="js-qw" placeholder="Курица, творог, брауни" value="'+s.q+'" autocomplete="off"></label></header></div>'};
+const wShell=(s,h)=>wHeader(s)+'<main class="wmain">'+h+'</main>';
+function gridW(s){
+  const vis=R.filter(r=>(s.cat==='Все'||r.cat===s.cat)&&match(r,s.q));
+  if(!vis.length)return '<div class="empty"><b>Ничего не нашлось</b><span>Попробуй «курица», «творог» или «шоколад».</span></div>';
+  const hero=s.cat==='Все'&&!s.q,nw=get('05'),rest=hero?vis.filter(r=>r.id!=='05'):vis;
+  return (hero?'<div class="dhero" data-act="open" data-id="05"><div><small>Новое</small><h3>'+nw.t+'</h3><p>'+nw.k+' ккал · '+nw.p+' г белка · '+nw.f+' г жиров</p><span class="btn">Открыть рецепт</span></div>'+ic(nw.s,150)+'</div>':'')+'<div class="g3">'+rest.map(r=>tile(r,s,false)).join('')+(hero?pdfT():'')+'</div>';
+}
+const wHome=s=>wShell(s,'<div class="wh"><aside class="side"><div class="lbl" style="margin-top:0">Разделы</div>'+CATS.map(c=>'<button class="item'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+(c==='Все'?'Все рецепты':c)+'<span>'+(c==='Все'?R.length:R.filter(r=>r.cat===c).length)+'</span></button>').join('')+'</aside><section><div class="chips wchips">'+CATS.map(c=>'<button class="chip'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+c+'</button>').join('')+'</div><div class="js-grid">'+gridW(s)+'</div></section></div>');
+function wRecipe(s){
+  const r=get(s.rid),p=s.n,f=p/r.y,fav=s.fav.has(r.id),others=R.filter(x=>x.id!==r.id).slice(0,3);
+  const sh=s.sheet?'<div class="sbg"'+SC0.recipe(s).split('<div class="sbg"')[1]:'';
+  return wShell(s,'<div class="wr"><div class="w-media" style="background:'+r.bg+'"><div class="chipt">'+r.cl+'</div>'+ic(r.s,150)+'</div><div class="w-head"><div class="crumb"><button data-act="tab" data-id="home">Рецепты</button> / '+r.cat+'</div><div class="trow"><div><div class="tag">Рецепт №'+r.num+' · '+r.cl+'</div><h2 class="ttl">'+r.t+'</h2></div><div class="acts"><button class="rbtn'+(fav?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',20)+'</button><button class="rbtn" data-act="share" aria-label="Поделиться">'+I('share',20)+'</button></div></div></div><div class="w-kb">'+kbTiles(r)+'<p class="kbn">КБЖУ '+r.kn+'</p>'+totBox(r,p)+ctlB(r,p)+vidB(r)+'</div><div class="w-ing"><div class="lbl" style="margin-top:0">Ингредиенты · на '+p+' '+plu(p,r.pu)+'</div>'+ingB(r,s,f)+addB(r,s)+'</div><div class="w-steps"><div class="lbl" style="margin-top:0">Способ приготовления</div>'+stepsOl(r)+'</div><div class="w-promos"><a class="promo" href="Fiolet-recipes.pdf" target="_blank" rel="noopener" style="margin:0;color:inherit;text-decoration:none"><div><b>Все рецепты одним файлом</b><span>PDF-сборник Fiolet</span></div>'+I('down',20)+'</a><div class="promo tg" data-act="tgshare" style="margin:0"><div><b>Заметки и новые рецепты</b><span>Telegram t.me/Fiolet_artem</span></div>'+I('send',20)+'</div></div><div class="w-more">Ещё рецепты'+others.map(o=>'<button class="chip" data-act="open" data-id="'+o.id+'">'+(o.sh||o.t)+'</button>').join('')+'</div></div>')+sh;
+}
+const fixSheet=(h,s)=>{const r=get(s.rid);return h.replace('fiolet.github.io/recipes/'+r.slug,shareUrl(r).replace(/^https?:\/\//,'')).replace('Так ссылка выглядит в Telegram. Адрес пример, настоящий появится после публикации.','Ссылка откроет именно этот рецепт.').replace('<span>fiolet.github.io</span>','<span>'+location.host+'</span>')};
+SC.home=s=>isWide()?wHome(s):SC0.home(s).replace('<span>6 рецептов</span>','<span>'+R.length+' '+plu(R.length,['рецепт','рецепта','рецептов'])+'</span>');
+SC.recipe=s=>fixSheet(isWide()?wRecipe(s):SC0.recipe(s),s);
+['list','fav'].forEach(k=>{SC[k]=s=>isWide()?wShell(s,'<div class="wcol">'+SC0[k](s)+'</div>'):SC0[k](s)});
+gridHTML=s=>isWide()?gridW(s):gridM(s);
+const act0=act;
+act=function(el){
+  const a=el.dataset.act;
+  if(a==='pdf'){window.open('Fiolet-recipes.pdf','_blank');return}
+  if(a==='tgshare'){if(el.closest('.sheet')){const r=get(S.rid);window.open('https://t.me/share/url?url='+encodeURIComponent(shareUrl(r))+'&text='+encodeURIComponent(r.t),'_blank')}else window.open('https://t.me/Fiolet_artem','_blank');return}
+  if(a==='copy'){try{navigator.clipboard.writeText(shareUrl(get(S.rid)))}catch(e){}}
+  act0(el);
+};
+function route(){const m=location.hash.match(/^#recipe\/(.+)$/),r=m&&R.find(x=>x.slug===m[1]);if(r){S.rid=r.id;S.n=r.y;S.screen='recipe';S.from='home';S.sheet=false}}
+let firstRun=true;
+render=function(){
+  if(firstRun){firstRun=false;try{if(!localStorage.getItem(KEY))S.fav.clear()}catch(e){S.fav.clear()}route()}
+  const y=window.scrollY;
+  root.innerHTML=SC[S.screen](S)+tmrB(S);
+  root.classList.toggle('wide',isWide());
+  window.scrollTo(0,lastScreen===S.screen?y:0);
+  lastScreen=S.screen;
+  try{history.replaceState(null,'',S.screen==='recipe'?'#recipe/'+get(S.rid).slug:location.pathname+location.search)}catch(e){}
+  wake(S.screen==='cook'||(T&&!T.done));
+};
+document.addEventListener('input',e=>{
+  if(!e.target.classList.contains('js-qw'))return;
+  S.q=e.target.value;
+  if(S.screen!=='home'){S.screen='home';S.sheet=false;render();const q=root.querySelector('.js-qw');if(q){q.focus();q.setSelectionRange(q.value.length,q.value.length)}}
+  else root.querySelector('.js-grid').innerHTML=gridHTML(S);
+});
+window.matchMedia('(min-width:700px)').addEventListener('change',()=>render());
+window.addEventListener('hashchange',()=>{route();render()});
+
+const root=document.getElementById('phone');
+let S=mkS(),lastScreen=null,tm=null,T=null;
+function fmtT(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function tmrB(s){
+  if(!T||(s.screen==='cook'&&T.rid===s.rid&&T.step===s.step))return '';
+  return '<div class="tmr'+(s.screen==='cook'?' ck':'')+(T.done?' done':'')+'" data-act="resume">'+I('clock',16)+'<span class="js-tt">'+(T.done?'Время вышло':fmtT(T.left))+'</span><small>'+T.name+'</small><button data-act="timerOff" aria-label="Сбросить таймер">'+I('close',12)+'</button></div>';
+}
+function paintTimers(){if(!T)return;root.querySelectorAll('.js-tt').forEach(e=>e.textContent=T.done?'Время вышло':fmtT(T.left));if(T.done)root.querySelectorAll('.tmr').forEach(e=>e.classList.add('done'))}
+const KEY='fiolet-c-v1';
+let AC=null,bus=null,ringSet=false,WL=null;
+function remain(){return Math.max(0,Math.ceil((T.end-Date.now())/1000))}
+function arm(){AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume()}
+function cancelRing(){if(bus){try{bus.disconnect()}catch(e){}bus=null}ringSet=false}
+function schedRing(secs){
+  cancelRing();if(!AC)return;
+  bus=AC.createGain();bus.connect(AC.destination);ringSet=true;
+  [0,.5,1,1.8,2.3,2.8].forEach(t=>{const o=AC.createOscillator(),g=AC.createGain(),a=AC.currentTime+secs+t;o.frequency.value=880;g.gain.setValueAtTime(.0001,a);g.gain.exponentialRampToValueAtTime(.35,a+.03);g.gain.exponentialRampToValueAtTime(.0001,a+.32);o.connect(g);g.connect(bus);o.start(a);o.stop(a+.35)});
+}
+async function wake(on){try{if(on&&'wakeLock' in navigator&&!WL){WL=await navigator.wakeLock.request('screen');WL.addEventListener('release',()=>{WL=null})}else if(!on&&WL){await WL.release();WL=null}}catch(e){}}
+function tick(){
+  if(!T)return;
+  if(!T.done){T.left=remain();if(T.left<=0){T.left=0;T.done=true;clearInterval(tm);try{navigator.vibrate&&navigator.vibrate([300,150,300,150,300])}catch(e){}if(!ringSet)schedRing(0);toast('Таймер: время вышло');save()}}
+  paintTimers();
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({fav:[...S.fav],list:S.list,chk:S.chk,T:T?{end:T.end,rid:T.rid,step:T.step,name:T.name,done:T.done}:null}))}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;S.fav=new Set(d.fav||[]);S.list=d.list||{};S.chk=d.chk||{};if(d.T&&d.T.end){T=d.T;if(T.done)T.left=0;else{T.left=remain();if(T.left<=0){T.done=true;T.left=0}else tm=setInterval(tick,1000)}}}catch(e){}}
+function render(){
+  const pb=root.querySelector('.pbody');const top=pb?pb.scrollTop:0;
+  root.innerHTML=SC[S.screen](S)+tmrB(S);
+  if(lastScreen===S.screen){const nb=root.querySelector('.pbody');if(nb)nb.scrollTop=top}
+  lastScreen=S.screen;
+  wake(S.screen==='cook'||(T&&!T.done));
+}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;root.appendChild(t);setTimeout(()=>t.remove(),1800)}
+function act(el){
+  const a=el.dataset.act,id=el.dataset.id;let msg='';
+  switch(a){
+    case 'open':if(S.screen!=='recipe')S.from=S.screen;S.rid=id;S.n=get(id).y;S.screen='recipe';S.sheet=false;break;
+    case 'back':S.screen=S.from||'home';S.sheet=false;break;
+    case 'tab':S.screen=id;S.sheet=false;break;
+    case 'cat':S.cat=id;break;
+    case 'fav':S.fav.has(id)?S.fav.delete(id):S.fav.add(id);break;
+    case 'step':S.n=Math.max(1,Math.min(12,S.n+Number(id)));break;
+    case 'chk':{const k=S.rid+':'+id;S.chk[k]=!S.chk[k];break}
+    case 'lchk':S.chk['L:'+id]=!S.chk['L:'+id];break;
+    case 'addList':{const sk=get(S.rid).ings.map((_,i)=>S.chk[S.rid+':'+i]?i:-1).filter(i=>i>=0);S.list[S.rid]={p:S.n,skip:sk};msg=sk.length?'Добавлено, без '+sk.length+' '+plu(sk.length,['вычеркнутого','вычеркнутых','вычеркнутых']):'Добавлено в список покупок';break}
+    case 'clearList':S.list={};Object.keys(S.chk).forEach(k=>{if(k.startsWith('L:'))delete S.chk[k]});break;
+    case 'cook':S.screen='cook';S.step=0;break;
+    case 'exitCook':S.screen='recipe';break;
+    case 'nextStep':if(S.step>=get(S.rid).steps.length-1){S.screen='recipe';msg='Приятного аппетита'}else S.step++;break;
+    case 'prevStep':S.step=Math.max(0,S.step-1);break;
+    case 'timer':{clearInterval(tm);arm();const r=get(S.rid),secs=Math.round(Number(id)*60);T={end:Date.now()+secs*1000,left:secs,rid:S.rid,step:S.step,name:r.sh||r.t,done:false};schedRing(secs);tm=setInterval(tick,1000);break}
+    case 'timerOff':clearInterval(tm);cancelRing();T=null;break;
+    case 'resume':S.rid=T.rid;S.step=T.step;S.screen='cook';S.sheet=false;break;
+    case 'share':S.sheet=true;S.copied=false;break;
+    case 'closeSheet':S.sheet=false;break;
+    case 'copy':S.copied=true;break;
+    case 'pdf':msg='Здесь скачается PDF-сборник';break;
+    case 'tgshare':msg='Откроется Telegram';break;
+  }
+  save();render();if(msg)toast(msg);
+}
+root.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;e.preventDefault();act(el)});
+root.addEventListener('input',e=>{if(e.target.classList.contains('js-q')){S.q=e.target.value;root.querySelector('.js-grid').innerHTML=gridHTML(S)}});
+load();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(T)tick();wake(S.screen==='cook'||(T&&!T.done))}});
+document.addEventListener('pointerdown',()=>{if(T&&!T.done&&!AC){arm();schedRing(remain())}});
+document.getElementById('resetP').onclick=()=>{try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
+render();
+
+</script>
+</body>
+</html>
