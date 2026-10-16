@@ -249,9 +249,10 @@ body{background:var(--paper)}
 .sh nav button,.sh nav a{font-size:14px;font-weight:600;color:var(--soft);text-decoration:none;padding-bottom:4px;border-bottom:2px solid transparent}
 .sh nav .on{color:var(--ink);border-bottom-color:var(--accent)}
 .wmain{max-width:1240px;margin:0 auto;padding:0 40px}
-.wh{display:grid;grid-template-columns:220px 1fr;gap:36px;padding:28px 0 40px}
+.wh{display:grid;grid-template-columns:220px 1fr;gap:36px;padding:20px 0 24px}
 .side .item{width:100%}
 .wchips{display:none}
+@media (min-width:1000px){.wh .g3{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .wr{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px 24px;padding:16px 0}
 .w-media{grid-column:1/5;grid-row:1;height:140px;border-radius:24px;display:flex;align-items:center;justify-content:center;position:relative}
 .w-media .chipt{bottom:12px;left:14px}
@@ -308,6 +309,7 @@ body{background:var(--paper)}
 <symbol id="s-pep" viewBox="0 0 300 260"><path d="M60,90 Q60,56 100,56 Q140,56 140,90 L140,170 Q140,200 100,200 Q60,200 60,170 Z" fill="#D9612F" stroke="#B94E22" stroke-width="2"/><path d="M72,96 Q72,68 100,68 Q128,68 128,96 L128,164 Q128,188 100,188 Q72,188 72,164 Z" fill="#F3EAD8"/><path d="M160,90 Q160,56 200,56 Q240,56 240,90 L240,170 Q240,200 200,200 Q160,200 160,170 Z" fill="#E6793E" stroke="#B94E22" stroke-width="2"/><path d="M172,96 Q172,68 200,68 Q228,68 228,96 L228,164 Q228,188 200,188 Q172,188 172,164 Z" fill="#F3EAD8"/><g fill="#E3C98C"><rect x="80" y="110" width="13" height="13" rx="3"/><rect x="100" y="130" width="13" height="13" rx="3"/><rect x="180" y="115" width="13" height="13" rx="3"/><rect x="205" y="135" width="13" height="13" rx="3"/></g><circle cx="100" cy="155" r="14" fill="#C8503E"/><path d="M182,160 q18,-16 36,0 q-18,14 -36,0z" fill="#FBF6EC" stroke="#E0D6BF" stroke-width="1.2"/></symbol>
 <symbol id="s-buck" viewBox="0 0 300 260"><rect x="60" y="64" width="180" height="148" rx="20" fill="#fff" fill-opacity=".55" stroke="#6B4C63" stroke-width="3"/><rect x="72" y="76" width="156" height="124" rx="14" fill="#D9BB93"/><g fill="#EAD2A6" stroke="#CDA96F" stroke-width="1.2"><ellipse cx="108" cy="112" rx="17" ry="11"/><ellipse cx="178" cy="102" rx="16" ry="11"/><ellipse cx="145" cy="175" rx="17" ry="11"/></g><g fill="#E08A3C"><path d="M92,150 l9,-3 4,8 -8,5 -6,-6z"/><path d="M198,150 l9,-2 3,9 -9,4 -5,-7z"/></g><circle cx="160" cy="90" r="10" fill="#C15B4A"/><circle cx="88" cy="185" r="10" fill="#C15B4A"/></symbol>
 <symbol id="s-brn" viewBox="0 0 300 260"><rect x="60" y="64" width="180" height="148" rx="20" fill="#fff" fill-opacity=".55" stroke="#6B4C63" stroke-width="3"/><rect x="72" y="76" width="156" height="124" rx="14" fill="#4A2E22"/><g fill="#6B4530" opacity=".7"><ellipse cx="100" cy="98" rx="15" ry="7"/><ellipse cx="150" cy="90" rx="19" ry="6"/><ellipse cx="200" cy="105" rx="14" ry="7"/><ellipse cx="105" cy="135" rx="17" ry="7"/><ellipse cx="165" cy="145" rx="16" ry="7"/><ellipse cx="205" cy="160" rx="13" ry="6"/></g><g fill="#241209"><rect x="120" y="110" width="10" height="8" rx="2"/><rect x="160" y="127" width="9" height="7" rx="2"/><rect x="133" y="155" width="9" height="7" rx="2"/><rect x="183" y="93" width="9" height="7" rx="2"/></g></symbol>
+<symbol id="s-pot" viewBox="0 0 300 260"><rect x="54" y="60" width="192" height="156" rx="16" fill="#fff" fill-opacity=".55" stroke="#6B4C63" stroke-width="3"/><rect x="66" y="72" width="168" height="132" rx="10" fill="#F1DFA6"/><g fill="#E6C873" stroke="#C9A24A" stroke-width="1.5"><circle cx="100" cy="105" r="19"/><circle cx="145" cy="98" r="19"/><circle cx="192" cy="108" r="19"/><circle cx="118" cy="148" r="19"/><circle cx="168" cy="150" r="19"/><circle cx="205" cy="165" r="17"/><circle cx="90" cy="175" r="17"/></g><g fill="#F6EBD3"><rect x="112" y="118" width="22" height="16" rx="5"/><rect x="158" y="112" width="22" height="16" rx="5"/><rect x="132" y="165" width="22" height="16" rx="5"/><rect x="182" y="140" width="20" height="15" rx="5"/></g><g stroke="#F0B24A" stroke-width="2.4" stroke-linecap="round"><path d="M85,88 l9,14"/><path d="M125,84 l8,13"/><path d="M170,86 l9,14"/><path d="M212,95 l7,12"/></g><g fill="#C96B3A"><circle cx="150" cy="130" r="2.5"/><circle cx="103" cy="140" r="2.5"/><circle cx="196" cy="125" r="2.5"/><circle cx="150" cy="190" r="2.5"/></g></symbol>
 </defs></svg>
 <div id="phone" class="app"></div>
 <button id="resetP" hidden></button>
@@ -332,9 +334,13 @@ const R=[
  steps:['Мелко нарежь курицу. Засыпь гречку в контейнер, сверху выложи курицу и специи.','Мелко нарежь лук и морковь, добавь вместе с кружочками помидора.','Залей водой (ровно в 2 раза больше, чем гречки).','В отдельной ёмкости смешай яйцо, йогурт и тёртый сыр, залей соусом сверху.','Разогрей духовку до 180°C и поставь на 45 минут.']},
 {id:'06',cat:'ПП',cl:'ПП',t:'Фаршированные перцы с курицей',sh:'Фаршированные перцы',k:494,p:57,f:23,c:16,kn:'на 1 порцию (2 половинки)',y:2,pu:PU,pl:'Порции',s:'pep',bg:'#F0D9CF',slug:'farshirovannye-pertsy',reel:'https://www.instagram.com/reel/DeGfT3oTQ1I/',
  ings:[[2,'шт','Болгарский перец'],[250,'г','Куриная грудка','куриная грудка'],[3,'шт','Яйца','яйца'],[50,'г','Лёгкий сыр 15%','сыр лёгкий 15%'],[100,'г','Моцарелла'],[1,'шт','Помидор','помидор']],
- steps:['Разрежь перцы пополам вдоль, удали семена и перегородки.','Нарежь курицу мелкими кубиками, помидор кружочками, моцареллу половинками шариков.','Разбей яйца в миску, посоли, поперчи и взболтай вилкой.','Разложи курицу по половинкам перца, сверху положи кружочки помидора и половинки моцареллы.','Залей каждую половинку яичной смесью, посыпь тёртым сыром.','Запекай в разогретой до 180°C духовке 35 минут под фольгой, затем ещё 10 минут без фольги, чтобы верх подрумянился.']}
+ steps:['Разрежь перцы пополам вдоль, удали семена и перегородки.','Нарежь курицу мелкими кубиками, помидор кружочками, моцареллу половинками шариков.','Разбей яйца в миску, посоли, поперчи и взболтай вилкой.','Разложи курицу по половинкам перца, сверху положи кружочки помидора и половинки моцареллы.','Залей каждую половинку яичной смесью, посыпь тёртым сыром.','Запекай в разогретой до 180°C духовке 35 минут под фольгой, затем ещё 10 минут без фольги, чтобы верх подрумянился.']},
+{id:'07',cat:'Ужины',cl:'Ужин',t:'Картофельная запеканка с курицей',sh:'Картофельная запеканка',k:464,p:43,f:15,c:36,kn:'на 1 порцию',y:1,pu:PU,pl:'Порции',s:'pot',bg:'#F3E6C4',slug:'kartofelnaya-zapekanka',reel:'https://www.instagram.com/reel/Deiy5NBINA9/',
+ ings:[[200,'г','Картофель'],[120,'г','Куриное филе','куриная грудка'],[1,'шт','Яйцо','яйца'],[30,'г','Греческий йогурт'],[20,'г','Лёгкий сыр 15%','сыр лёгкий 15%'],[null,'по вкусу','Соль'],[null,'по вкусу','Специи (перец, прованские травы, паприка)']],
+ steps:['Выложи на дно формы картофель, нарезанный кружками, посоли и поперчи.','Нарежь курицу и выложи на картофель, приправь специями.','Смешай яйцо с греческим йогуртом и паприкой до однородной массы.','Залей соусом картофель с курицей, накрой фольгой и поставь в духовку на 35 минут при 180-200°C.','Посыпь сверху тёртым сыром и верни в духовку ещё на 10 минут.']}
 ];
 R.forEach(r=>r.num=String(Number(r.id)));
+const NEW_ID='07';
 const get=id=>R.find(r=>r.id===id);
 const I=(n,s)=>'<svg class="ic" style="width:'+(s||22)+'px;height:'+(s||22)+'px" viewBox="0 0 24 24"><use href="#i-'+n+'"/></svg>';
 const ic=(s,w)=>'<svg viewBox="0 0 300 260" width="'+w+'"><use href="#s-'+s+'"/></svg>';
@@ -352,8 +358,8 @@ function gridHTML(s){
   const vis=R.filter(r=>(s.cat==='Все'||r.cat===s.cat)&&match(r,s.q));
   if(!vis.length)return '<div class="empty"><b>Ничего не нашлось</b><span>Попробуй «курица», «творог» или «шоколад».</span></div>';
   const hero=s.cat==='Все'&&!s.q;
-  const rest=hero?vis.filter(r=>r.id!=='05'):vis;
-  return (hero?heroB(get('05')):'')+'<div class="grid2">'+rest.map((r,i)=>tile(r,s,rest.length%2===1&&i===rest.length-1)).join('')+'</div>';
+  const rest=hero?vis.filter(r=>r.id!==NEW_ID):vis;
+  return (hero?heroB(get(NEW_ID)):'')+'<div class="grid2">'+rest.map((r,i)=>tile(r,s,rest.length%2===1&&i===rest.length-1)).join('')+'</div>';
 }
 const listCount=s=>Object.keys(s.list).length;
 const tabbar=(s,act)=>'<div class="tabbar">'+[['home','book','Рецепты'],['fav','heart','Избранное'],['list','list','Список']].map(([k,i,t])=>'<button class="'+(act===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+I(i,22)+'<span>'+t+'</span>'+(k==='list'&&listCount(s)?'<em>'+listCount(s)+'</em>':'')+'</button>').join('')+'</div>';
@@ -411,8 +417,8 @@ const wShell=(s,h)=>wHeader(s)+'<main class="wmain">'+h+'</main>';
 function gridW(s){
   const vis=R.filter(r=>(s.cat==='Все'||r.cat===s.cat)&&match(r,s.q));
   if(!vis.length)return '<div class="empty"><b>Ничего не нашлось</b><span>Попробуй «курица», «творог» или «шоколад».</span></div>';
-  const hero=s.cat==='Все'&&!s.q,nw=get('05'),rest=hero?vis.filter(r=>r.id!=='05'):vis;
-  return (hero?'<div class="dhero" data-act="open" data-id="05"><div><small>Новое</small><h3>'+nw.t+'</h3><p>'+nw.k+' ккал · '+nw.p+' г белка · '+nw.f+' г жиров</p><span class="btn">Открыть рецепт</span></div>'+ic(nw.s,150)+'</div>':'')+'<div class="g3">'+rest.map(r=>tile(r,s,false)).join('')+(hero?pdfT():'')+'</div>';
+  const hero=s.cat==='Все'&&!s.q,nw=get(NEW_ID),rest=hero?vis.filter(r=>r.id!==NEW_ID):vis;
+  return (hero?'<div class="dhero" data-act="open" data-id="'+NEW_ID+'"><div><small>Новое</small><h3>'+nw.t+'</h3><p>'+nw.k+' ккал · '+nw.p+' г белка · '+nw.f+' г жиров</p><span class="btn">Открыть рецепт</span></div>'+ic(nw.s,150)+'</div>':'')+'<div class="g3">'+rest.map(r=>tile(r,s,false)).join('')+(hero?pdfT():'')+'</div>';
 }
 const wHome=s=>wShell(s,'<div class="wh"><aside class="side"><div class="lbl" style="margin-top:0">Разделы</div>'+CATS.map(c=>'<button class="item'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+(c==='Все'?'Все рецепты':c)+'<span>'+(c==='Все'?R.length:R.filter(r=>r.cat===c).length)+'</span></button>').join('')+'</aside><section><div class="chips wchips">'+CATS.map(c=>'<button class="chip'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+c+'</button>').join('')+'</div><div class="js-grid">'+gridW(s)+'</div></section></div>');
 function wRecipe(s){
