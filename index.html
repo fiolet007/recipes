@@ -533,16 +533,17 @@ act=function(el){
   if(vvAct(el))return;
   act0(el);
 };
-function route(){const m=location.hash.match(/^#recipe\/(.+)$/),r=m&&R.find(x=>x.slug===m[1]);if(r){S.rid=r.id;S.n=r.y;S.screen='recipe';S.from='home';S.sheet=false}}
+function route(){const m=location.hash.match(/^#recipe\/(.+)$/),r=m&&R.find(x=>x.slug===m[1]);if(r){if(S.rid!==r.id||S.screen!=='recipe')S.n=r.y;S.rid=r.id;S.screen='recipe';S.from='home';S.sheet=false}}
 let firstRun=true;
 render=function(){
-  if(firstRun){firstRun=false;try{if(!localStorage.getItem(KEY))S.fav.clear()}catch(e){S.fav.clear()}route()}
+  if(firstRun){firstRun=false;try{if(!localStorage.getItem(KEY))S.fav.clear()}catch(e){S.fav.clear()}route();if(S.screen==='vv')setTimeout(vvLoad,0)}
   const y=window.scrollY;
   root.innerHTML=SC[S.screen](S)+tmrB(S);
   root.classList.toggle('wide',isWide());
   window.scrollTo(0,lastScreen===S.screen?y:0);
   lastScreen=S.screen;
   try{history.replaceState(null,'',S.screen==='recipe'?'#recipe/'+get(S.rid).slug:location.pathname+location.search)}catch(e){}
+  save();
   wake(S.screen==='cook'||(T&&!T.done));
 };
 document.addEventListener('input',e=>{
@@ -578,8 +579,9 @@ function tick(){
   if(!T.done){T.left=remain();if(T.left<=0){T.left=0;T.done=true;clearInterval(tm);try{navigator.vibrate&&navigator.vibrate([300,150,300,150,300])}catch(e){}if(!ringSet)schedRing(0);toast('Таймер: время вышло');save()}}
   paintTimers();
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify({fav:[...S.fav],list:S.list,chk:S.chk,T:T?{end:T.end,rid:T.rid,step:T.step,name:T.name,done:T.done}:null}))}catch(e){}}
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;S.fav=new Set(d.fav||[]);S.list=d.list||{};S.chk=d.chk||{};if(d.T&&d.T.end){T=d.T;if(T.done)T.left=0;else{T.left=remain();if(T.left<=0){T.done=true;T.left=0}else tm=setInterval(tick,1000)}}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({fav:[...S.fav],list:S.list,chk:S.chk,sc:S.screen,rid:S.rid,n:S.n,st:S.step,cat:S.cat,T:T?{end:T.end,rid:T.rid,step:T.step,name:T.name,done:T.done}:null}))}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;S.fav=new Set(d.fav||[]);S.list=d.list||{};S.chk=d.chk||{};
+    if(['home','list','fav','vv','recipe','cook'].includes(d.sc)&&((d.sc!=='recipe'&&d.sc!=='cook')||get(d.rid))){S.screen=d.sc;S.rid=d.rid||S.rid;S.n=d.n||S.n;S.step=d.st||0;S.cat=CATS.includes(d.cat)?d.cat:'Все'}if(d.T&&d.T.end){T=d.T;if(T.done)T.left=0;else{T.left=remain();if(T.left<=0){T.done=true;T.left=0}else tm=setInterval(tick,1000)}}}catch(e){}}
 function render(){
   const pb=root.querySelector('.pbody');const top=pb?pb.scrollTop:0;
   root.innerHTML=SC[S.screen](S)+tmrB(S);
