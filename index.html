@@ -238,6 +238,7 @@ body{background:var(--paper)}
 .app .sheet{position:fixed;left:50%;right:auto;bottom:0;transform:translateX(-50%);width:min(100%,520px);z-index:51;padding-bottom:max(22px,env(safe-area-inset-bottom))}
 .app .cook{position:fixed;inset:0;z-index:40;padding-left:max(22px,calc((100vw - 640px)/2));padding-right:max(22px,calc((100vw - 640px)/2))}
 .testt{display:none}
+.rmx{margin-left:auto;flex:none;width:30px;height:30px;border-radius:50%;color:var(--soft);font:400 22px/1 Montserrat;display:flex;align-items:center;justify-content:center;padding:0}
 .vvb{margin:14px 0 4px;background:var(--accent);color:var(--paper);border-style:solid}
 .vvl{border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;background:#FBF8F5}
 .vvl.off{opacity:.5}
@@ -406,7 +407,7 @@ function aggregate(s){
   Object.entries(s.list).forEach(([rid,en])=>{const r=get(rid),f=en.p/r.y;r.ings.forEach((x,i)=>{
     if(en.skip.includes(i))return;
     if(typeof x[0]==='number'){const key=(x[3]||x[2].toLowerCase())+'|'+x[1];const e=map.get(key)||{key,name:cap(x[3]||x[2]),u:x[1],v:0,from:[]};e.v+=x[0]*f;e.from.push({n:r.sh||r.t,q:fmt(x[0]*f)});map.set(key,e)}
-    else free.push({name:x[2],q:qty(x[0],x[1],f),from:r.sh||r.t});
+    else free.push({name:x[2],q:qty(x[0],x[1],f),from:r.sh||r.t,rid,i});
   })});
   return {lines:[...map.values()],free};
 }
@@ -414,7 +415,7 @@ SC.list=s=>{
   const n=listCount(s);
   if(!n)return '<div class="pbody"><div class="lhead"><b>Список покупок</b><span>Пока пусто</span></div><div class="empty"><b>Здесь соберутся продукты</b><span>Открой рецепт и нажми «Добавить в список покупок». Одинаковые продукты из разных рецептов сложатся вместе.</span></div></div>'+tabbar(s,'list');
   const a=aggregate(s);
-  return '<div class="pbody"><div class="lhead"><b>Список покупок</b><span>'+n+' '+plu(n,['рецепт','рецепта','рецептов'])+', '+a.lines.length+' позиций</span></div><div class="lbody">'+a.lines.map(l=>'<div class="ig'+(s.chk['L:'+l.key]?' done':'')+'" data-act="lchk" data-id="'+l.key+'"><span class="bx"></span><span class="q">'+fmt(l.v)+' '+l.u+'</span><span>'+l.name+'<small>Для: '+l.from.map(x=>x.n+(l.from.length>1?' '+x.q+' '+l.u:'')).join(', ')+'</small></span></div>').join('')+(a.free.length?'<div class="lbl">Докупить по вкусу</div>'+a.free.map(l=>'<div class="ig" style="cursor:default"><span class="q" style="width:78px">'+l.q+'</span><span>'+l.name+'<small>Для: '+l.from+'</small></span></div>').join(''):'')+''+(VV_ON?'<button class="btn2 vvb" data-act="vv">Собрать корзину во ВкусВилле</button>':'')+'<button class="clr" data-act="clearList">Очистить список</button></div></div>'+tabbar(s,'list');
+  return '<div class="pbody"><div class="lhead"><b>Список покупок</b><span>'+n+' '+plu(n,['рецепт','рецепта','рецептов'])+', '+a.lines.length+' позиций</span></div><div class="lbody">'+a.lines.map(l=>'<div class="ig'+(s.chk['L:'+l.key]?' done':'')+'" data-act="lchk" data-id="'+l.key+'"><span class="bx"></span><span class="q">'+fmt(l.v)+' '+l.u+'</span><span>'+l.name+'<small>Для: '+l.from.map(x=>x.n+(l.from.length>1?' '+x.q+' '+l.u:'')).join(', ')+'</small></span><button class="rmx" data-act="lrm" data-id="'+l.key+'" aria-label="Убрать из списка">×</button></div>').join('')+(a.free.length?'<div class="lbl">Докупить по вкусу</div>'+a.free.map(l=>'<div class="ig" style="cursor:default"><span class="q" style="width:78px">'+l.q+'</span><span>'+l.name+'<small>Для: '+l.from+'</small></span><button class="rmx" data-act="lrmf" data-id="'+l.rid+':'+l.i+'" aria-label="Убрать из списка">×</button></div>').join(''):'')+''+(VV_ON?'<button class="btn2 vvb" data-act="vv">Собрать корзину во ВкусВилле</button>':'')+'<button class="clr" data-act="clearList">Очистить список</button></div></div>'+tabbar(s,'list');
 };
 SC.fav=s=>{
   const fs=R.filter(r=>s.fav.has(r.id));
@@ -453,7 +454,7 @@ SC.recipe=s=>fixSheet(isWide()?wRecipe(s):SC0.recipe(s),s);
 gridHTML=s=>isWide()?gridW(s):gridM(s);
 const VV_BASE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'/mcp':(window.VV_PROXY||'');
 const VV_ON=!!VV_BASE;
-const VVQ=[['вода',null],['куриная грудка','филе грудки цыпленка'],['куриное филе','филе грудки цыпленка'],['яйц','яйцо куриное'],['сыр лёгкий','сыр легкий'],['лёгкий сыр','сыр легкий'],['говяжья вырезка','говядина вырезка'],['геркулес','овсяные хлопья'],['греческий йогурт','йогурт греческий'],['зернистый','творог зернистый'],['творог','творог зернистый'],['перец','перец болгарский'],['кукуруза','кукуруза консервированная'],['корнишоны','корнишоны'],['салат','салат листовой'],['кетчуп','кетчуп'],['горчица','горчица дижонская'],['красный лук','лук красный'],['лук красный','лук красный'],['лук','лук репчатый'],['моцарелла','моцарелла'],['ветчина','ветчина'],['картофель','картофель'],['помидор','помидоры'],['морков','морковь'],['чиа','семена чиа'],['мёд','мёд'],['молоко','молоко'],['какао','какао-порошок'],['мука','мука пшеничная'],['сахар','сахар'],['сливочное масло','масло сливочное'],['шоколад','шоколад'],['гречнев','крупа гречневая'],['сливки','сливки'],['горошек','горошек замороженный'],['рис','рис']];
+const VVQ=[['вода',null],['куриная грудка','филе грудки цыпленка'],['куриное филе','филе грудки цыпленка'],['яйц','яйцо куриное'],['сыр лёгкий','сыр легкий'],['лёгкий сыр','сыр легкий'],['говяжья вырезка','говядина вырезка'],['геркулес','овсяные хлопья'],['греческий йогурт','йогурт греческий'],['зернистый','творог зернистый'],['творог','творог зернистый'],['перец','перец болгарский'],['кукуруза','кукуруза консервированная'],['корнишоны','корнишоны'],['салат','салат листовой'],['кетчуп','кетчуп'],['горчица','горчица дижонская'],['красный лук','лук красный'],['лук красный','лук красный'],['лук','лук репчатый'],['моцарелла','моцарелла'],['ветчина','ветчина'],['картофель','картофель'],['помидор','томаты'],['морков','морковь'],['чиа','семена чиа'],['мёд','мёд'],['молоко','молоко'],['какао','какао-порошок'],['мука','мука пшеничная'],['сахар','сахар'],['сливочное масло','масло сливочное'],['шоколад','шоколад'],['гречнев','крупа гречневая'],['сливки','сливки'],['горошек','горошек замороженный'],['рис','рис'],['разрыхлитель','разрыхлитель теста'],['ванилин','ванилин']];
 const dec=t=>{const e=document.createElement('textarea');e.innerHTML=t;return e.value};
 const VV={c:{},sel:{},inc:{},qty:{},busy:false,link:null,err:null};
 const vvQuery=name=>{const n=name.toLowerCase();for(const [k,q] of VVQ)if(n.includes(k))return q;return name.replace(/\(.*?\)|\d+%/g,'').trim()};
@@ -479,11 +480,13 @@ function vvPlan(l,c){
   if(cnt&&pcs!==null)return {q:Math.max(1,Math.ceil(pcs/cnt)),note:'в упаковке '+cnt+' шт'+(eggs?' (обычно, проверь)':'')};
   return {q:1,note:'размер упаковки не указан, поставил 1 шт'};
 }
+const nrm=t=>t.toLowerCase().replace(/ё/g,'е');
+const vvRel=(q,items)=>{const ws=nrm(q).split(/[^а-яa-z0-9]+/).filter(w=>w.length>=3&&!/^\d/.test(w)).map(w=>w.slice(0,5));if(!ws.length)return items;return items.filter(it=>{const n=nrm(dec(it.name));return ws.some(w=>n.includes(w))})};
 async function vvSearch(q){
   let c={};try{c=JSON.parse(localStorage.getItem('fiolet-vv-cache')||'{}')}catch(e){}
-  const h=c[q];if(h&&Date.now()-h.t<43200000)return h.i;
+  const h=c[q];if(h&&Date.now()-h.t<43200000)return vvRel(q,h.i);
   const d=await mcp('vkusvill_products_search',{q,limit:5,mode:'custom',fields:['id','name','price','unit','weight','rating','url']});
-  const i=(d&&d.data&&d.data.items)||[];
+  const i=vvRel(q,(d&&d.data&&d.data.items)||[]);
   try{c[q]={t:Date.now(),i};localStorage.setItem('fiolet-vv-cache',JSON.stringify(c))}catch(e){}
   return i;
 }
@@ -524,9 +527,18 @@ function vvAct(el){
   else if(a==='vvBuild')vvBuild();
   return true;
 }
+function listRemove(a,id){
+  Object.entries(S.list).forEach(([rid,en])=>{
+    const r=get(rid);
+    r.ings.forEach((x,i)=>{const hit=a==='lrm'?(typeof x[0]==='number'&&(x[3]||x[2].toLowerCase())+'|'+x[1]===id):(rid+':'+i===id);if(hit&&!en.skip.includes(i))en.skip.push(i)});
+    if(r.ings.every((_,i)=>en.skip.includes(i)))delete S.list[rid];
+  });
+  delete S.chk['L:'+id];VV.link=null;save();render();
+}
 const act0=act;
 act=function(el){
   const a=el.dataset.act;
+  if(a==='lrm'||a==='lrmf'){listRemove(a,el.dataset.id);return}
   if(a==='pdf'){window.open('Fiolet-recipes.pdf','_blank');return}
   if(a==='tgshare'){if(el.closest('.sheet')){const r=get(S.rid);window.open('https://t.me/share/url?url='+encodeURIComponent(shareUrl(r))+'&text='+encodeURIComponent(r.t),'_blank')}else window.open('https://t.me/Fiolet_artem','_blank');return}
   if(a==='copy'){try{navigator.clipboard.writeText(shareUrl(get(S.rid)))}catch(e){}}
