@@ -157,6 +157,9 @@ h2{font-size:24px;font-weight:800;margin:0 0 6px}
 .pcard .lvs i{background:var(--paper)}
 .pic{display:flex;flex:none}
 .pic svg+svg{margin-left:-16px}
+.demo{display:inline-block;margin-left:8px;vertical-align:2px;font:700 10px Montserrat;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--paper);border-radius:10px;padding:3px 8px}
+.pnote{margin:0 18px 12px;font:400 13px/1.4 'PT Serif',Georgia,serif;color:var(--soft);border-left:3px solid var(--accent);padding:2px 0 2px 10px}
+.wplans .pnote{margin-left:0;max-width:560px}
 .plback{font:600 13px Montserrat;color:var(--accent);margin:0 0 6px;padding:0}
 .seg{display:flex;align-items:center;gap:6px;padding:4px 18px 12px}
 .seg button{flex:1;border-radius:14px;background:var(--oats);padding:11px 0;font:700 15px Montserrat;color:var(--soft)}
@@ -484,7 +487,12 @@ SC.recipe=s=>fixSheet(isWide()?wRecipe(s):SC0.recipe(s),s);
 const LEVELS=[1400,1600,1800],PLAN_DAYS=3;
 // Рацион: {id,t,dishes:[{id:'рецепт',meal?:'Завтрак',v:{1400:{g:[граммы по порядку ингредиентов, null оставляет как в рецепте],kbju:[ккал,Б,Ж,У]},1600:{...},1800:{...}}}]}.
 // Калораж показывается в рационе, только если для него есть данные у всех блюд (1400 без данных берётся из самого рецепта).
-const PLANS=[];
+const PLANS=[
+{id:'demo',demo:true,t:'Пример рациона',dishes:[
+ {id:'01',meal:'Завтрак',v:{1400:{g:[45,1,1.5,110,1,null],kbju:[409,14,11,70]},1600:{g:[50,1.5,2,125,1.5,null],kbju:[467,16,13,80]},1800:{g:[55,1.5,2,140,1.5,null],kbju:[525,19,14,90]}}},
+ {id:'07',meal:'Обед',v:{1400:{g:[220,135,1,35,20,null,null],kbju:[514,48,17,40]},1600:{g:[255,150,1.5,40,25,null,null],kbju:[587,54,19,46]},1800:{g:[285,170,1.5,45,30,null,null],kbju:[661,61,21,51]}}},
+ {id:'08',meal:'Ужин',v:{1400:{g:[65,155,35,55,35,35,35,165,null,null],kbju:[477,45,3,64]},1600:{g:[75,175,40,65,40,40,40,190,null,null],kbju:[546,52,4,73]},1800:{g:[85,200,45,70,45,45,45,215,null,null],kbju:[614,58,4,83]}}}]}
+];
 const getPlan=id=>PLANS.find(p=>p.id===id);
 const dishOf=(pl,id)=>pl.dishes.find(d=>d.id===id);
 const variant=(r,d,L)=>{const v=d&&d.v&&d.v[L];if(!v)return L===1400?r:null;const o=Object.assign({},r,{ings:r.ings.map((x,i)=>v.g&&typeof v.g[i]==='number'?[v.g[i]].concat(x.slice(1)):x)});if(v.kbju){o.k=v.kbju[0];o.p=v.kbju[1];o.f=v.kbju[2];o.c=v.kbju[3]}return o};
@@ -493,11 +501,12 @@ const livePlans=()=>PLANS.filter(p=>planLevels(p).length);
 const rcur=s=>{const r=get(s.rid),pl=s.pctx&&getPlan(s.plan);return (pl&&variant(r,dishOf(pl,s.rid),s.lvl))||r};
 const planSum=(pl,L)=>pl.dishes.reduce((a,d)=>{const r=variant(get(d.id),d,L);return {k:a.k+r.k,p:a.p+r.p,f:a.f+r.f,c:a.c+r.c}},{k:0,p:0,f:0,c:0});
 const lvChips=ls=>'<div class="lvs">'+ls.map(x=>'<i>'+x+'</i>').join('')+'ккал</div>';
-const plansHTML=()=>{const LP=livePlans();return '<div class="lhead"><b>Рационы на 3 дня</b><span>'+(LP.length?LP.length+' '+plu(LP.length,['рацион','рациона','рационов']):'Скоро')+'</span></div><div class="pintro">Каждый рацион это 3 блюда на 3 дня. Для 1400, 1600 и 1800 ккал в рационе свои граммовки.</div>'+(LP.length?'<div class="plist">'+LP.map(p=>'<div class="pcard" data-act="plan" data-id="'+p.id+'"><div class="pic">'+p.dishes.map(d=>ic(get(d.id).s,54)).join('')+'</div><div><b>'+p.t+'</b><small>'+p.dishes.length+' '+plu(p.dishes.length,['блюдо','блюда','блюд'])+' · '+PLAN_DAYS+' дня</small>'+lvChips(planLevels(p))+'</div></div>').join('')+'</div>':'<div class="empty"><b>Первые рационы скоро появятся</b><span>Откроешь рацион, выберешь калораж и увидишь блюда с нужным весом продуктов.</span>'+lvChips(LEVELS)+'</div>')};
+const plansHTML=()=>{const LP=livePlans();return '<div class="lhead"><b>Рационы на 3 дня</b><span>'+(LP.length?LP.length+' '+plu(LP.length,['рацион','рациона','рационов']):'Скоро')+'</span></div><div class="pintro">Каждый рацион это 3 блюда на 3 дня. Для 1400, 1600 и 1800 ккал в рационе свои граммовки.</div>'+(LP.length?'<div class="plist">'+LP.map(p=>'<div class="pcard" data-act="plan" data-id="'+p.id+'"><div class="pic">'+p.dishes.map(d=>ic(get(d.id).s,54)).join('')+'</div><div><b>'+p.t+(p.demo?'<span class="demo">Пример</span>':'')+'</b><small>'+p.dishes.length+' '+plu(p.dishes.length,['блюдо','блюда','блюд'])+' · '+PLAN_DAYS+' дня</small>'+lvChips(planLevels(p))+'</div></div>').join('')+'</div>':'<div class="empty"><b>Первые рационы скоро появятся</b><span>Откроешь рацион, выберешь калораж и увидишь блюда с нужным весом продуктов.</span>'+lvChips(LEVELS)+'</div>')};
 SC.plans=s=>isWide()?wShell(s,'<div class="wplans">'+plansHTML()+'</div>'):'<div class="pbody">'+plansHTML()+'</div>'+tabbar(s,'plans');
 const planHTML=s=>{
   const pl=getPlan(s.plan),lv=planLevels(pl),L=lv.includes(s.lvl)?s.lvl:lv[0],t=planSum(pl,L);
   return '<div class="lhead"><button class="plback" data-act="tab" data-id="plans">‹ Все рационы</button><b>'+pl.t+'</b><span>'+pl.dishes.length+' '+plu(pl.dishes.length,['блюдо','блюда','блюд'])+' на '+PLAN_DAYS+' дня</span></div>'
+   +(pl.demo?'<div class="pnote">Это пример: так будет выглядеть рацион. Блюда настоящие, а граммы и КБЖУ по калоражам условные.</div>':'')
    +'<div class="seg">'+lv.map(x=>'<button class="'+(x===L?'on':'')+'" data-act="lvl" data-id="'+x+'">'+x+'</button>').join('')+'<em>ккал</em></div>'
    +'<div class="ptot"><b>'+t.k+' ккал</b><i>Б '+t.p+'</i><i>Ж '+t.f+'</i><i>У '+t.c+'</i><span>Сумма всех блюд на один день</span></div>'
    +'<div class="'+(isWide()?'g3':'grid2')+' pdish">'+pl.dishes.map(d=>{const r=get(d.id),k=variant(r,d,L);return '<div class="tl" style="background:'+r.bg+'" data-act="openPlan" data-id="'+r.id+'"><div class="im">'+ic(r.s,92)+'</div><div>'+r.t+'<small>'+(d.meal?d.meal+' · ':'')+k.k+' ккал</small></div></div>'}).join('')+'</div>';
