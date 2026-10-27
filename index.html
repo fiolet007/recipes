@@ -148,15 +148,31 @@ h2{font-size:24px;font-weight:800;margin:0 0 6px}
 .fcard{display:flex;align-items:center;gap:12px;border-radius:18px;padding:10px 14px 10px 10px;margin-bottom:10px;cursor:pointer;font-weight:800;font-size:15px;line-height:1.2}
 .fcard small{display:block;font:500 12px Montserrat;color:var(--soft);margin-top:3px}
 .pintro{padding:0 18px 12px;font:400 14px/1.45 'PT Serif',Georgia,serif;color:var(--soft)}
-.plans{display:grid;gap:12px;padding:4px 18px 24px}
-.plan{position:relative;border-radius:20px;background:var(--oats);padding:20px 18px 18px}
-.plan .pk{font:800 40px/1 Montserrat;color:var(--ink)}
-.plan .pk small{font:600 13px Montserrat;color:var(--soft);margin-left:8px}
-.plan p{margin:10px 0 0;font:400 14px/1.4 'PT Serif',Georgia,serif;color:var(--soft)}
-.plan .soon{position:absolute;top:16px;right:16px;font:700 11px Montserrat;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--paper);border-radius:12px;padding:5px 10px}
+.lvs{display:flex;gap:6px;align-items:center;justify-content:inherit;margin-top:10px;font:600 12px Montserrat;color:var(--soft)}
+.lvs i{font-style:normal;background:var(--oats);color:var(--ink);border-radius:12px;padding:4px 9px}
+.plist{display:grid;gap:12px;padding:4px 18px 24px}
+.pcard{display:flex;align-items:center;gap:14px;border-radius:20px;background:var(--oats);padding:14px 16px;cursor:pointer}
+.pcard b{display:block;font-size:17px;font-weight:800}
+.pcard small{display:block;font:500 12px Montserrat;color:var(--soft);margin-top:3px}
+.pcard .lvs i{background:var(--paper)}
+.pic{display:flex;flex:none}
+.pic svg+svg{margin-left:-16px}
+.plback{font:600 13px Montserrat;color:var(--accent);margin:0 0 6px;padding:0}
+.seg{display:flex;align-items:center;gap:6px;padding:4px 18px 12px}
+.seg button{flex:1;border-radius:14px;background:var(--oats);padding:11px 0;font:700 15px Montserrat;color:var(--soft)}
+.seg button.on{background:var(--accent);color:var(--paper)}
+.seg em{font:600 12px Montserrat;font-style:normal;color:var(--soft);margin-left:4px}
+.ptot{margin:0 18px 14px;border-radius:16px;background:var(--asoft);padding:12px 14px;font:600 13px Montserrat}
+.ptot b{font-size:18px;font-weight:800;margin-right:10px}
+.ptot i{font-style:normal;margin-right:10px}
+.ptot span{display:block;font:400 12px Montserrat;color:var(--soft);margin-top:4px}
+.pdish{padding:0 18px 24px}
 .wplans{max-width:980px;margin:0 auto;padding:0 28px 30px}
-.wplans .lhead,.wplans .pintro,.wplans .plans{padding-left:0;padding-right:0}
-.app.wide .plans{grid-template-columns:repeat(3,1fr)}
+.wplans .lhead,.wplans .pintro,.wplans .plist,.wplans .pdish{padding-left:0;padding-right:0}
+.wplans .seg{padding-left:0;padding-right:0;max-width:420px}
+.wplans .ptot{margin-left:0;margin-right:0;max-width:420px}
+.wplans .empty{text-align:left;padding:18px 0}
+.app.wide .plist{grid-template-columns:repeat(2,1fr)}
 .clr{margin:14px auto 0;display:block;font:700 13px Montserrat;color:var(--accent)}
 
 .reel{flex:1;background:#2A2320;position:relative;display:flex;flex-direction:column}
@@ -384,7 +400,7 @@ const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
 const qty=(v,u,f)=>typeof v==='number'?fmt(v*f)+' '+u:(v?v+' ':'')+u;
 const stem=q=>{q=q.trim().toLowerCase();return q.length>5?q.slice(0,-2):q.length>3?q.slice(0,-1):q};
 const match=(r,q)=>!q||(r.t+' '+r.ings.map(i=>i[2]).join(' ')).toLowerCase().includes(stem(q));
-const mkS=o=>Object.assign({screen:'home',cat:'Все',q:'',rid:'04',n:1,chk:{},fav:new Set(['02']),list:{},step:0,sheet:false,from:'home',copied:false},o||{});
+const mkS=o=>Object.assign({screen:'home',cat:'Все',q:'',rid:'04',n:1,chk:{},fav:new Set(['02']),list:{},step:0,sheet:false,from:'home',copied:false,pctx:null,plan:null,lvl:1400},o||{});
 
 const tile=(r,s,wide)=>'<div class="tl'+(wide?' wide':'')+'" style="background:'+r.bg+'" data-act="open" data-id="'+r.id+'"><button class="fv'+(s.fav.has(r.id)?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',17)+'</button><div class="im">'+ic(r.s,wide?78:92)+'</div><div>'+(r.sh||r.t)+'<small>'+r.k+' ккал'+(r.per100?' на 100 г':'')+'</small></div></div>';
 const heroB=r=>'<div class="hero" data-act="open" data-id="'+r.id+'"><div><small>Новое</small><h5>'+r.t+'</h5><p>'+r.k+' ккал · Б '+r.p+' · Ж '+r.f+' · У '+r.c+'</p></div>'+ic(r.s,130)+'</div>';
@@ -401,15 +417,16 @@ const tabbar=(s,act)=>'<div class="tabbar">'+[['home','book','Рецепты'],[
 const SC={};
 SC.home=s=>'<div class="pbody"><div class="C-home"><div class="mast"><b>Fiolet</b><span>6 рецептов</span></div><label class="search">'+I('search',18)+'<input class="js-q" placeholder="Курица, творог, брауни" value="'+s.q+'" autocomplete="off"></label><div class="chips">'+['Все','Завтраки','Ужины','Десерты','ПП'].map(c=>'<button class="chip'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+c+'</button>').join('')+'</div><div class="js-grid">'+gridHTML(s)+'</div></div></div>'+tabbar(s,'home');
 
+const kbLv=s=>s.pctx?' · '+s.pctx:'';
 const kbTiles=r=>'<div class="tiles"><div><b>'+r.k+'</b><span>ккал</span></div><div><b>'+r.p+'</b><span>белки</span></div><div><b>'+r.f+'</b><span>жиры</span></div><div><b>'+r.c+'</b><span>углев.</span></div></div>';
 const totBox=(r,p)=>r.per100?'':'<div class="tot"><span>Всего на '+p+' '+plu(p,r.pu)+'</span><b>'+r.k*p+' ккал</b><i>Б '+r.p*p+'</i><i>Ж '+r.f*p+'</i><i>У '+r.c*p+'</i></div>';
 const stepsOl=r=>'<ol class="stp">'+r.steps.map(t=>'<li><span>'+t+'</span></li>').join('')+'</ol>';
 SC.recipe=s=>{
-  const r=get(s.rid),p=s.n,f=p/r.y,fav=s.fav.has(r.id);
+  const r=rcur(s),p=s.n,f=p/r.y,fav=s.fav.has(r.id);
   const others=R.filter(x=>x.id!==r.id).slice(1,3);
   const inList=s.list[r.id]!==undefined;
   const sheet=s.sheet?'<div class="sbg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div><div class="sh-t">Поделиться рецептом</div><div class="og"><div class="og-i" style="background:'+r.bg+'">'+ic(r.s,100)+'</div><div class="og-t"><span>fiolet.github.io</span><b>'+r.t+'</b><span>'+r.k+' ккал · '+r.p+' г белка · Fiolet</span></div></div><div class="url"><span>fiolet.github.io/recipes/'+r.slug+'</span><button data-act="copy">'+I('copy',16)+(s.copied?'Скопировано':'Копировать')+'</button></div><div class="note">Так ссылка выглядит в Telegram. Адрес пример, настоящий появится после публикации.</div><div class="sh-b"><button class="btn" data-act="tgshare">'+I('send',17)+'В Telegram</button><button class="btn out" data-act="pdf">'+I('down',17)+'PDF</button></div></div>':'';
-  return '<div class="pbody"><div class="C-hero" style="background:'+r.bg+'"><button class="rb l" data-act="back" aria-label="Назад">'+I('back',20)+'</button><button class="rb r2'+(fav?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',20)+'</button><button class="rb r1" data-act="share" aria-label="Поделиться">'+I('share',20)+'</button><div class="chipt">'+r.cl+'</div>'+ic(r.s,230)+'</div><div class="C-body"><div class="tag">Рецепт №'+r.num+'</div><h3 class="ttl">'+r.t+'</h3>'+kbTiles(r)+'<p class="kbn">КБЖУ '+r.kn+'</p>'+totBox(r,p)+'<a class="vid" href="'+r.reel+'" target="_blank" rel="noopener">'+I('play',15)+'Смотреть видео в Instagram</a><div class="ctl"><div class="pill"><span>'+r.pl+'</span><span class="sp"><button data-act="step" data-id="-1" aria-label="Меньше">−</button><b>'+p+'</b><button data-act="step" data-id="1" aria-label="Больше">+</button></span></div><button class="btn" data-act="cook">Режим готовки</button></div><div class="lbl">Ингредиенты · на '+p+' '+plu(p,r.pu)+'</div>'+r.ings.map((x,i)=>'<div class="ig'+(s.chk[r.id+':'+i]?' done':'')+'" data-act="chk" data-id="'+i+'"><span class="bx"></span><span class="q">'+qty(x[0],x[1],f)+'</span><span>'+x[2]+'</span></div>').join('')+'<button class="btn2'+(inList?' ok':'')+'" data-act="addList">'+I('list',17)+(inList?'В списке покупок, обновить':'Добавить в список покупок')+'</button><div class="lbl">Способ приготовления</div>'+stepsOl(r)+'<div class="promo" data-act="pdf"><div><b>Все рецепты одним файлом</b><span>PDF-сборник Fiolet</span></div>'+I('down',20)+'</div><div class="promo tg" data-act="tgshare"><div><b>Заметки и новые рецепты</b><span>Telegram t.me/Fiolet_artem</span></div>'+I('send',20)+'</div><div class="lbl">Ещё рецепты</div><div class="grid2">'+others.map(o=>tile(o,s,false)).join('')+'</div></div></div>'+tabbar(s,'home')+sheet;
+  return '<div class="pbody"><div class="C-hero" style="background:'+r.bg+'"><button class="rb l" data-act="back" aria-label="Назад">'+I('back',20)+'</button><button class="rb r2'+(fav?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',20)+'</button><button class="rb r1" data-act="share" aria-label="Поделиться">'+I('share',20)+'</button><div class="chipt">'+r.cl+'</div>'+ic(r.s,230)+'</div><div class="C-body"><div class="tag">Рецепт №'+r.num+'</div><h3 class="ttl">'+r.t+'</h3>'+kbTiles(r)+'<p class="kbn">КБЖУ '+r.kn+kbLv(s)+'</p>'+totBox(r,p)+'<a class="vid" href="'+r.reel+'" target="_blank" rel="noopener">'+I('play',15)+'Смотреть видео в Instagram</a><div class="ctl"><div class="pill"><span>'+r.pl+'</span><span class="sp"><button data-act="step" data-id="-1" aria-label="Меньше">−</button><b>'+p+'</b><button data-act="step" data-id="1" aria-label="Больше">+</button></span></div><button class="btn" data-act="cook">Режим готовки</button></div><div class="lbl">Ингредиенты · на '+p+' '+plu(p,r.pu)+'</div>'+r.ings.map((x,i)=>'<div class="ig'+(s.chk[r.id+':'+i]?' done':'')+'" data-act="chk" data-id="'+i+'"><span class="bx"></span><span class="q">'+qty(x[0],x[1],f)+'</span><span>'+x[2]+'</span></div>').join('')+'<button class="btn2'+(inList?' ok':'')+'" data-act="addList">'+I('list',17)+(inList?'В списке покупок, обновить':'Добавить в список покупок')+'</button><div class="lbl">Способ приготовления</div>'+stepsOl(r)+'<div class="promo" data-act="pdf"><div><b>Все рецепты одним файлом</b><span>PDF-сборник Fiolet</span></div>'+I('down',20)+'</div><div class="promo tg" data-act="tgshare"><div><b>Заметки и новые рецепты</b><span>Telegram t.me/Fiolet_artem</span></div>'+I('send',20)+'</div><div class="lbl">Ещё рецепты</div><div class="grid2">'+others.map(o=>tile(o,s,false)).join('')+'</div></div></div>'+tabbar(s,'home')+sheet;
 };
 SC.cook=s=>{
   const r=get(s.rid),i=s.step,last=r.steps.length-1,m=(r.steps[i].match(/(\d+)\s*минут/)||[])[1];
@@ -417,7 +434,7 @@ SC.cook=s=>{
 };
 function aggregate(s){
   const map=new Map(),free=[];
-  Object.entries(s.list).forEach(([rid,en])=>{const r=get(rid),f=en.p/r.y;r.ings.forEach((x,i)=>{
+  Object.entries(s.list).forEach(([rid,en])=>{const r0=get(rid),pl=en.pl&&getPlan(en.pl),r=(pl&&variant(r0,dishOf(pl,rid),en.lv))||r0,f=en.p/r.y;r.ings.forEach((x,i)=>{
     if(en.skip.includes(i))return;
     if(typeof x[0]==='number'){const key=(x[3]||x[2].toLowerCase())+'|'+x[1];const e=map.get(key)||{key,name:cap(x[3]||x[2]),u:x[1],v:0,from:[]};e.v+=x[0]*f;e.from.push({n:r.sh||r.t,q:fmt(x[0]*f)});map.set(key,e)}
     else free.push({name:x[2],q:qty(x[0],x[1],f),from:r.sh||r.t,rid,i});
@@ -446,7 +463,7 @@ const vidB=r=>'<a class="vid" href="'+r.reel+'" target="_blank" rel="noopener">'
 const ingB=(r,s,f)=>r.ings.map((x,i)=>'<div class="ig'+(s.chk[r.id+':'+i]?' done':'')+'" data-act="chk" data-id="'+i+'"><span class="bx"></span><span class="q">'+qty(x[0],x[1],f)+'</span><span>'+x[2]+'</span></div>').join('');
 const addB=(r,s)=>{const on=s.list[r.id]!==undefined;return '<button class="btn2'+(on?' ok':'')+'" data-act="addList">'+I('list',17)+(on?'В списке покупок, обновить':'Добавить в список покупок')+'</button>'};
 const pdfT=()=>'<a class="tl" href="Fiolet-recipes.pdf" target="_blank" rel="noopener" style="background:var(--deep);color:var(--paper);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none"><div class="im" style="color:var(--asoft);padding-top:18px">'+I('down',44)+'</div><div>PDF-сборник<small style="color:var(--asoft)">Все рецепты одним файлом</small></div></a>';
-const wHeader=s=>{const cur=s.screen==='recipe'?'home':s.screen,n=listCount(s);return '<div class="shw"><header class="sh"><button class="logo" data-act="tab" data-id="home">Fiolet</button><nav>'+[['home','Рецепты'],['plans','Рационы'],['fav','Избранное'],['list','Список']].map(([k,t])=>'<button class="'+(cur===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+t+(k==='list'&&n?'<em>'+n+'</em>':'')+'</button>').join('')+'<a href="https://t.me/Fiolet_artem" target="_blank" rel="noopener">Telegram</a></nav><label class="search">'+I('search',18)+'<input class="js-qw" placeholder="Курица, творог, брауни" value="'+s.q+'" autocomplete="off"></label></header></div>'};
+const wHeader=s=>{const cur=s.screen==='recipe'?(s.pctx?'plans':'home'):s.screen==='plan'?'plans':s.screen,n=listCount(s);return '<div class="shw"><header class="sh"><button class="logo" data-act="tab" data-id="home">Fiolet</button><nav>'+[['home','Рецепты'],['plans','Рационы'],['fav','Избранное'],['list','Список']].map(([k,t])=>'<button class="'+(cur===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+t+(k==='list'&&n?'<em>'+n+'</em>':'')+'</button>').join('')+'<a href="https://t.me/Fiolet_artem" target="_blank" rel="noopener">Telegram</a></nav><label class="search">'+I('search',18)+'<input class="js-qw" placeholder="Курица, творог, брауни" value="'+s.q+'" autocomplete="off"></label></header></div>'};
 const wShell=(s,h)=>wHeader(s)+'<main class="wmain">'+h+'</main>';
 function gridW(s){
   const vis=R.filter(r=>(s.cat==='Все'||r.cat===s.cat)&&match(r,s.q));
@@ -456,19 +473,36 @@ function gridW(s){
 }
 const wHome=s=>wShell(s,'<div class="wh"><aside class="side"><div class="lbl" style="margin-top:0">Разделы</div>'+CATS.map(c=>'<button class="item'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+(c==='Все'?'Все рецепты':c)+'<span>'+(c==='Все'?R.length:R.filter(r=>r.cat===c).length)+'</span></button>').join('')+'</aside><section><div class="chips wchips">'+CATS.map(c=>'<button class="chip'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+c+'</button>').join('')+'</div><div class="js-grid">'+gridW(s)+'</div></section></div>');
 function wRecipe(s){
-  const r=get(s.rid),p=s.n,f=p/r.y,fav=s.fav.has(r.id),others=R.filter(x=>x.id!==r.id).slice(0,2);
+  const r=rcur(s),p=s.n,f=p/r.y,fav=s.fav.has(r.id),others=R.filter(x=>x.id!==r.id).slice(0,2);
   const sh=s.sheet?'<div class="sbg"'+SC0.recipe(s).split('<div class="sbg"')[1]:'';
-  return wShell(s,'<div class="wr"><div class="w-media" style="background:'+r.bg+'"><div class="chipt">'+r.cl+'</div>'+ic(r.s,150)+'</div><div class="w-head"><div class="crumb"><button data-act="tab" data-id="home">Рецепты</button> / '+r.cat+'</div><div class="trow"><div><div class="tag">Рецепт №'+r.num+' · '+r.cl+'</div><h2 class="ttl">'+r.t+'</h2></div><div class="acts"><button class="rbtn'+(fav?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',20)+'</button><button class="rbtn" data-act="share" aria-label="Поделиться">'+I('share',20)+'</button></div></div></div><div class="w-kb">'+kbTiles(r)+'<p class="kbn">КБЖУ '+r.kn+'</p>'+totBox(r,p)+ctlB(r,p)+vidB(r)+'</div><div class="w-ing"><div class="lbl" style="margin-top:0">Ингредиенты · на '+p+' '+plu(p,r.pu)+'</div>'+ingB(r,s,f)+addB(r,s)+'</div><div class="w-steps"><div class="lbl" style="margin-top:0">Способ приготовления</div>'+stepsOl(r)+'</div><div class="w-promos"><a class="promo" href="Fiolet-recipes.pdf" target="_blank" rel="noopener" style="margin:0;color:inherit;text-decoration:none"><div><b>Все рецепты одним файлом</b><span>PDF-сборник Fiolet</span></div>'+I('down',20)+'</a><div class="promo tg" data-act="tgshare" style="margin:0"><div><b>Заметки и новые рецепты</b><span>Telegram t.me/Fiolet_artem</span></div>'+I('send',20)+'</div></div><div class="w-more">Ещё рецепты'+others.map(o=>'<button class="chip" data-act="open" data-id="'+o.id+'">'+(o.sh||o.t)+'</button>').join('')+'</div></div>')+sh;
+  return wShell(s,'<div class="wr"><div class="w-media" style="background:'+r.bg+'"><div class="chipt">'+r.cl+'</div>'+ic(r.s,150)+'</div><div class="w-head"><div class="crumb">'+(s.pctx?'<button data-act="tab" data-id="plans">Рационы</button> / <button data-act="plan" data-id="'+s.plan+'">'+s.pctx+'</button>':'<button data-act="tab" data-id="home">Рецепты</button> / '+r.cat)+'</div><div class="trow"><div><div class="tag">Рецепт №'+r.num+' · '+r.cl+'</div><h2 class="ttl">'+r.t+'</h2></div><div class="acts"><button class="rbtn'+(fav?' on':'')+'" data-act="fav" data-id="'+r.id+'" aria-label="В избранное">'+I('heart',20)+'</button><button class="rbtn" data-act="share" aria-label="Поделиться">'+I('share',20)+'</button></div></div></div><div class="w-kb">'+kbTiles(r)+'<p class="kbn">КБЖУ '+r.kn+kbLv(s)+'</p>'+totBox(r,p)+ctlB(r,p)+vidB(r)+'</div><div class="w-ing"><div class="lbl" style="margin-top:0">Ингредиенты · на '+p+' '+plu(p,r.pu)+'</div>'+ingB(r,s,f)+addB(r,s)+'</div><div class="w-steps"><div class="lbl" style="margin-top:0">Способ приготовления</div>'+stepsOl(r)+'</div><div class="w-promos"><a class="promo" href="Fiolet-recipes.pdf" target="_blank" rel="noopener" style="margin:0;color:inherit;text-decoration:none"><div><b>Все рецепты одним файлом</b><span>PDF-сборник Fiolet</span></div>'+I('down',20)+'</a><div class="promo tg" data-act="tgshare" style="margin:0"><div><b>Заметки и новые рецепты</b><span>Telegram t.me/Fiolet_artem</span></div>'+I('send',20)+'</div></div><div class="w-more">Ещё рецепты'+others.map(o=>'<button class="chip" data-act="open" data-id="'+o.id+'">'+(o.sh||o.t)+'</button>').join('')+'</div></div>')+sh;
 }
 const fixSheet=(h,s)=>{const r=get(s.rid);return h.replace('fiolet.github.io/recipes/'+r.slug,shareUrl(r).replace(/^https?:\/\//,'')).replace('Так ссылка выглядит в Telegram. Адрес пример, настоящий появится после публикации.','Ссылка откроет именно этот рецепт.').replace('<span>fiolet.github.io</span>','<span>'+location.host+'</span>')};
 SC.home=s=>isWide()?wHome(s):SC0.home(s).replace('<span>6 рецептов</span>','<span>'+R.length+' '+plu(R.length,['рецепт','рецепта','рецептов'])+'</span>');
 SC.recipe=s=>fixSheet(isWide()?wRecipe(s):SC0.recipe(s),s);
 ['list','fav'].forEach(k=>{SC[k]=s=>isWide()?wShell(s,'<div class="wcol">'+SC0[k](s)+'</div>'):SC0[k](s)});
-const PLANS=[{k:1400,d:[]},{k:1600,d:[]},{k:1800,d:[]}];
-SC.plans=s=>{
-  const head='<div class="lhead"><b>Рационы на 3 дня</b><span>Скоро</span></div><div class="pintro">Готовые наборы блюд на три дня. Выбирай по калорийности: 1400, 1600 или 1800 ккал в день.</div><div class="plans">'+PLANS.map(p=>'<div class="plan">'+(p.d.length?'':'<span class="soon">Скоро</span>')+'<div class="pk">'+p.k+'<small>ккал в день</small></div><p>Рацион на 3 дня · 3 блюда</p></div>').join('')+'</div>';
-  return isWide()?wShell(s,'<div class="wplans">'+head+'</div>'):'<div class="pbody">'+head+'</div>'+tabbar(s,'plans');
+const LEVELS=[1400,1600,1800],PLAN_DAYS=3;
+// Рацион: {id,t,dishes:[{id:'рецепт',meal?:'Завтрак',v:{1400:{g:[граммы по порядку ингредиентов, null оставляет как в рецепте],kbju:[ккал,Б,Ж,У]},1600:{...},1800:{...}}}]}.
+// Калораж показывается в рационе, только если для него есть данные у всех блюд (1400 без данных берётся из самого рецепта).
+const PLANS=[];
+const getPlan=id=>PLANS.find(p=>p.id===id);
+const dishOf=(pl,id)=>pl.dishes.find(d=>d.id===id);
+const variant=(r,d,L)=>{const v=d&&d.v&&d.v[L];if(!v)return L===1400?r:null;const o=Object.assign({},r,{ings:r.ings.map((x,i)=>v.g&&typeof v.g[i]==='number'?[v.g[i]].concat(x.slice(1)):x)});if(v.kbju){o.k=v.kbju[0];o.p=v.kbju[1];o.f=v.kbju[2];o.c=v.kbju[3]}return o};
+const planLevels=pl=>LEVELS.filter(L=>pl.dishes.every(d=>variant(get(d.id),d,L)));
+const livePlans=()=>PLANS.filter(p=>planLevels(p).length);
+const rcur=s=>{const r=get(s.rid),pl=s.pctx&&getPlan(s.plan);return (pl&&variant(r,dishOf(pl,s.rid),s.lvl))||r};
+const planSum=(pl,L)=>pl.dishes.reduce((a,d)=>{const r=variant(get(d.id),d,L);return {k:a.k+r.k,p:a.p+r.p,f:a.f+r.f,c:a.c+r.c}},{k:0,p:0,f:0,c:0});
+const lvChips=ls=>'<div class="lvs">'+ls.map(x=>'<i>'+x+'</i>').join('')+'ккал</div>';
+const plansHTML=()=>{const LP=livePlans();return '<div class="lhead"><b>Рационы на 3 дня</b><span>'+(LP.length?LP.length+' '+plu(LP.length,['рацион','рациона','рационов']):'Скоро')+'</span></div><div class="pintro">Каждый рацион это 3 блюда на 3 дня. Для 1400, 1600 и 1800 ккал в рационе свои граммовки.</div>'+(LP.length?'<div class="plist">'+LP.map(p=>'<div class="pcard" data-act="plan" data-id="'+p.id+'"><div class="pic">'+p.dishes.map(d=>ic(get(d.id).s,54)).join('')+'</div><div><b>'+p.t+'</b><small>'+p.dishes.length+' '+plu(p.dishes.length,['блюдо','блюда','блюд'])+' · '+PLAN_DAYS+' дня</small>'+lvChips(planLevels(p))+'</div></div>').join('')+'</div>':'<div class="empty"><b>Первые рационы скоро появятся</b><span>Откроешь рацион, выберешь калораж и увидишь блюда с нужным весом продуктов.</span>'+lvChips(LEVELS)+'</div>')};
+SC.plans=s=>isWide()?wShell(s,'<div class="wplans">'+plansHTML()+'</div>'):'<div class="pbody">'+plansHTML()+'</div>'+tabbar(s,'plans');
+const planHTML=s=>{
+  const pl=getPlan(s.plan),lv=planLevels(pl),L=lv.includes(s.lvl)?s.lvl:lv[0],t=planSum(pl,L);
+  return '<div class="lhead"><button class="plback" data-act="tab" data-id="plans">‹ Все рационы</button><b>'+pl.t+'</b><span>'+pl.dishes.length+' '+plu(pl.dishes.length,['блюдо','блюда','блюд'])+' на '+PLAN_DAYS+' дня</span></div>'
+   +'<div class="seg">'+lv.map(x=>'<button class="'+(x===L?'on':'')+'" data-act="lvl" data-id="'+x+'">'+x+'</button>').join('')+'<em>ккал</em></div>'
+   +'<div class="ptot"><b>'+t.k+' ккал</b><i>Б '+t.p+'</i><i>Ж '+t.f+'</i><i>У '+t.c+'</i><span>Сумма всех блюд на один день</span></div>'
+   +'<div class="'+(isWide()?'g3':'grid2')+' pdish">'+pl.dishes.map(d=>{const r=get(d.id),k=variant(r,d,L);return '<div class="tl" style="background:'+r.bg+'" data-act="openPlan" data-id="'+r.id+'"><div class="im">'+ic(r.s,92)+'</div><div>'+r.t+'<small>'+(d.meal?d.meal+' · ':'')+k.k+' ккал</small></div></div>'}).join('')+'</div>';
 };
+SC.plan=s=>getPlan(s.plan)&&planLevels(getPlan(s.plan)).length?(isWide()?wShell(s,'<div class="wplans">'+planHTML(s)+'</div>'):'<div class="pbody">'+planHTML(s)+'</div>'+tabbar(s,'plans')):SC.plans(s);
 gridHTML=s=>isWide()?gridW(s):gridM(s);
 const VV_BASE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'/mcp':(window.VV_PROXY||'');
 const VV_ON=!!VV_BASE;
@@ -563,7 +597,7 @@ act=function(el){
   if(vvAct(el))return;
   act0(el);
 };
-function route(){const m=location.hash.match(/^#recipe\/(.+)$/),r=m&&R.find(x=>x.slug===m[1]);if(r){if(S.rid!==r.id||S.screen!=='recipe')S.n=r.y;S.rid=r.id;S.screen='recipe';S.from='home';S.sheet=false}}
+function route(){const m=location.hash.match(/^#recipe\/(.+)$/),r=m&&R.find(x=>x.slug===m[1]);if(r){if(S.rid!==r.id||S.screen!=='recipe'){S.n=r.y;S.pctx=null}S.rid=r.id;S.screen='recipe';S.from='home';S.sheet=false}}
 let firstRun=true;
 render=function(){
   if(firstRun){firstRun=false;try{if(!localStorage.getItem(KEY))S.fav.clear()}catch(e){S.fav.clear()}route();if(S.screen==='vv')setTimeout(vvLoad,0)}
@@ -609,9 +643,9 @@ function tick(){
   if(!T.done){T.left=remain();if(T.left<=0){T.left=0;T.done=true;clearInterval(tm);try{navigator.vibrate&&navigator.vibrate([300,150,300,150,300])}catch(e){}if(!ringSet)schedRing(0);toast('Таймер: время вышло');save()}}
   paintTimers();
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify({fav:[...S.fav],list:S.list,chk:S.chk,sc:S.screen,rid:S.rid,n:S.n,st:S.step,cat:S.cat,T:T?{end:T.end,rid:T.rid,step:T.step,name:T.name,done:T.done}:null}))}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({fav:[...S.fav],list:S.list,chk:S.chk,sc:S.screen,rid:S.rid,n:S.n,st:S.step,cat:S.cat,pctx:S.pctx,plan:S.plan,lvl:S.lvl,T:T?{end:T.end,rid:T.rid,step:T.step,name:T.name,done:T.done}:null}))}catch(e){}}
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;S.fav=new Set(d.fav||[]);S.list=d.list||{};S.chk=d.chk||{};
-    if(['home','plans','list','fav','vv','recipe','cook'].includes(d.sc)&&((d.sc!=='recipe'&&d.sc!=='cook')||get(d.rid))){S.screen=d.sc;S.rid=d.rid||S.rid;S.n=d.n||S.n;S.step=d.st||0;S.cat=CATS.includes(d.cat)?d.cat:'Все'}if(d.T&&d.T.end){T=d.T;if(T.done)T.left=0;else{T.left=remain();if(T.left<=0){T.done=true;T.left=0}else tm=setInterval(tick,1000)}}}catch(e){}}
+    if(['home','plans','plan','list','fav','vv','recipe','cook'].includes(d.sc)&&((d.sc!=='recipe'&&d.sc!=='cook')||get(d.rid))&&(d.sc!=='plan'||getPlan(d.plan))){const pk=d.pctx&&getPlan(d.plan);S.pctx=pk?d.pctx:null;S.plan=d.plan||null;S.lvl=LEVELS.includes(d.lvl)?d.lvl:1400;if(pk)S.from='plan';S.screen=d.sc;S.rid=d.rid||S.rid;S.n=d.n||S.n;S.step=d.st||0;S.cat=CATS.includes(d.cat)?d.cat:'Все'}if(d.T&&d.T.end){T=d.T;if(T.done)T.left=0;else{T.left=remain();if(T.left<=0){T.done=true;T.left=0}else tm=setInterval(tick,1000)}}}catch(e){}}
 function render(){
   const pb=root.querySelector('.pbody');const top=pb?pb.scrollTop:0;
   root.innerHTML=SC[S.screen](S)+tmrB(S);
@@ -623,7 +657,10 @@ function toast(m){const t=document.createElement('div');t.className='toast';t.te
 function act(el){
   const a=el.dataset.act,id=el.dataset.id;let msg='';
   switch(a){
-    case 'open':if(S.screen!=='recipe')S.from=S.screen;S.rid=id;S.n=get(id).y;S.screen='recipe';S.sheet=false;break;
+    case 'open':if(S.screen!=='recipe')S.from=S.screen;S.rid=id;S.n=get(id).y;S.pctx=null;S.screen='recipe';S.sheet=false;break;
+    case 'plan':{S.plan=id;const lv=planLevels(getPlan(id));if(!lv.includes(S.lvl))S.lvl=lv[0];S.screen='plan';S.sheet=false;break}
+    case 'lvl':S.lvl=Number(id);break;
+    case 'openPlan':{const pl=getPlan(S.plan);S.from='plan';S.rid=id;S.n=PLAN_DAYS;S.pctx=pl.t+' · '+S.lvl+' ккал';S.screen='recipe';S.sheet=false;break}
     case 'back':S.screen=S.from||'home';S.sheet=false;break;
     case 'tab':S.screen=id;S.sheet=false;break;
     case 'cat':S.cat=id;break;
@@ -631,7 +668,7 @@ function act(el){
     case 'step':S.n=Math.max(1,Math.min(12,S.n+Number(id)));break;
     case 'chk':{const k=S.rid+':'+id;S.chk[k]=!S.chk[k];break}
     case 'lchk':S.chk['L:'+id]=!S.chk['L:'+id];break;
-    case 'addList':{const sk=get(S.rid).ings.map((_,i)=>S.chk[S.rid+':'+i]?i:-1).filter(i=>i>=0);S.list[S.rid]={p:S.n,skip:sk};msg=sk.length?'Добавлено, без '+sk.length+' '+plu(sk.length,['вычеркнутого','вычеркнутых','вычеркнутых']):'Добавлено в список покупок';break}
+    case 'addList':{const sk=get(S.rid).ings.map((_,i)=>S.chk[S.rid+':'+i]?i:-1).filter(i=>i>=0);S.list[S.rid]={p:S.n,skip:sk,pl:S.pctx?S.plan:null,lv:S.lvl};msg=sk.length?'Добавлено, без '+sk.length+' '+plu(sk.length,['вычеркнутого','вычеркнутых','вычеркнутых']):'Добавлено в список покупок';break}
     case 'clearList':S.list={};Object.keys(S.chk).forEach(k=>{if(k.startsWith('L:'))delete S.chk[k]});break;
     case 'cook':S.screen='cook';S.step=0;break;
     case 'exitCook':S.screen='recipe';break;
