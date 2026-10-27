@@ -147,6 +147,16 @@ h2{font-size:24px;font-weight:800;margin:0 0 6px}
 .lbody{padding:6px 18px 24px}
 .fcard{display:flex;align-items:center;gap:12px;border-radius:18px;padding:10px 14px 10px 10px;margin-bottom:10px;cursor:pointer;font-weight:800;font-size:15px;line-height:1.2}
 .fcard small{display:block;font:500 12px Montserrat;color:var(--soft);margin-top:3px}
+.pintro{padding:0 18px 12px;font:400 14px/1.45 'PT Serif',Georgia,serif;color:var(--soft)}
+.plans{display:grid;gap:12px;padding:4px 18px 24px}
+.plan{position:relative;border-radius:20px;background:var(--oats);padding:20px 18px 18px}
+.plan .pk{font:800 40px/1 Montserrat;color:var(--ink)}
+.plan .pk small{font:600 13px Montserrat;color:var(--soft);margin-left:8px}
+.plan p{margin:10px 0 0;font:400 14px/1.4 'PT Serif',Georgia,serif;color:var(--soft)}
+.plan .soon{position:absolute;top:16px;right:16px;font:700 11px Montserrat;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--paper);border-radius:12px;padding:5px 10px}
+.wplans{max-width:980px;margin:0 auto;padding:0 28px 30px}
+.wplans .lhead,.wplans .pintro,.wplans .plans{padding-left:0;padding-right:0}
+.app.wide .plans{grid-template-columns:repeat(3,1fr)}
 .clr{margin:14px auto 0;display:block;font:700 13px Montserrat;color:var(--accent)}
 
 .reel{flex:1;background:#2A2320;position:relative;display:flex;flex-direction:column}
@@ -311,7 +321,7 @@ body{background:var(--paper)}
 <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
 <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></symbol>
-<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><path d="M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM4 10h16M8 3v4M16 3v4"/></symbol>
 <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></symbol>
 <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
@@ -386,7 +396,7 @@ function gridHTML(s){
   return (hero?heroB(get(NEW_ID)):'')+'<div class="grid2">'+rest.map((r,i)=>tile(r,s,rest.length%2===1&&i===rest.length-1)).join('')+'</div>';
 }
 const listCount=s=>Object.keys(s.list).length;
-const tabbar=(s,act)=>'<div class="tabbar">'+[['home','book','Рецепты'],['fav','heart','Избранное'],['list','list','Список']].map(([k,i,t])=>'<button class="'+(act===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+I(i,22)+'<span>'+t+'</span>'+(k==='list'&&listCount(s)?'<em>'+listCount(s)+'</em>':'')+'</button>').join('')+'</div>';
+const tabbar=(s,act)=>'<div class="tabbar">'+[['home','book','Рецепты'],['plans','cal','Рационы'],['fav','heart','Избранное'],['list','list','Список']].map(([k,i,t])=>'<button class="'+(act===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+I(i,22)+'<span>'+t+'</span>'+(k==='list'&&listCount(s)?'<em>'+listCount(s)+'</em>':'')+'</button>').join('')+'</div>';
 
 const SC={};
 SC.home=s=>'<div class="pbody"><div class="C-home"><div class="mast"><b>Fiolet</b><span>6 рецептов</span></div><label class="search">'+I('search',18)+'<input class="js-q" placeholder="Курица, творог, брауни" value="'+s.q+'" autocomplete="off"></label><div class="chips">'+['Все','Завтраки','Ужины','Десерты','ПП'].map(c=>'<button class="chip'+(s.cat===c?' on':'')+'" data-act="cat" data-id="'+c+'">'+c+'</button>').join('')+'</div><div class="js-grid">'+gridHTML(s)+'</div></div></div>'+tabbar(s,'home');
@@ -436,7 +446,7 @@ const vidB=r=>'<a class="vid" href="'+r.reel+'" target="_blank" rel="noopener">'
 const ingB=(r,s,f)=>r.ings.map((x,i)=>'<div class="ig'+(s.chk[r.id+':'+i]?' done':'')+'" data-act="chk" data-id="'+i+'"><span class="bx"></span><span class="q">'+qty(x[0],x[1],f)+'</span><span>'+x[2]+'</span></div>').join('');
 const addB=(r,s)=>{const on=s.list[r.id]!==undefined;return '<button class="btn2'+(on?' ok':'')+'" data-act="addList">'+I('list',17)+(on?'В списке покупок, обновить':'Добавить в список покупок')+'</button>'};
 const pdfT=()=>'<a class="tl" href="Fiolet-recipes.pdf" target="_blank" rel="noopener" style="background:var(--deep);color:var(--paper);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none"><div class="im" style="color:var(--asoft);padding-top:18px">'+I('down',44)+'</div><div>PDF-сборник<small style="color:var(--asoft)">Все рецепты одним файлом</small></div></a>';
-const wHeader=s=>{const cur=s.screen==='recipe'?'home':s.screen,n=listCount(s);return '<div class="shw"><header class="sh"><button class="logo" data-act="tab" data-id="home">Fiolet</button><nav>'+[['home','Рецепты'],['fav','Избранное'],['list','Список']].map(([k,t])=>'<button class="'+(cur===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+t+(k==='list'&&n?'<em>'+n+'</em>':'')+'</button>').join('')+'<a href="https://t.me/Fiolet_artem" target="_blank" rel="noopener">Telegram</a></nav><label class="search">'+I('search',18)+'<input class="js-qw" placeholder="Курица, творог, брауни" value="'+s.q+'" autocomplete="off"></label></header></div>'};
+const wHeader=s=>{const cur=s.screen==='recipe'?'home':s.screen,n=listCount(s);return '<div class="shw"><header class="sh"><button class="logo" data-act="tab" data-id="home">Fiolet</button><nav>'+[['home','Рецепты'],['plans','Рационы'],['fav','Избранное'],['list','Список']].map(([k,t])=>'<button class="'+(cur===k?'on':'')+'" data-act="tab" data-id="'+k+'">'+t+(k==='list'&&n?'<em>'+n+'</em>':'')+'</button>').join('')+'<a href="https://t.me/Fiolet_artem" target="_blank" rel="noopener">Telegram</a></nav><label class="search">'+I('search',18)+'<input class="js-qw" placeholder="Курица, творог, брауни" value="'+s.q+'" autocomplete="off"></label></header></div>'};
 const wShell=(s,h)=>wHeader(s)+'<main class="wmain">'+h+'</main>';
 function gridW(s){
   const vis=R.filter(r=>(s.cat==='Все'||r.cat===s.cat)&&match(r,s.q));
@@ -454,6 +464,11 @@ const fixSheet=(h,s)=>{const r=get(s.rid);return h.replace('fiolet.github.io/rec
 SC.home=s=>isWide()?wHome(s):SC0.home(s).replace('<span>6 рецептов</span>','<span>'+R.length+' '+plu(R.length,['рецепт','рецепта','рецептов'])+'</span>');
 SC.recipe=s=>fixSheet(isWide()?wRecipe(s):SC0.recipe(s),s);
 ['list','fav'].forEach(k=>{SC[k]=s=>isWide()?wShell(s,'<div class="wcol">'+SC0[k](s)+'</div>'):SC0[k](s)});
+const PLANS=[{k:1400,d:[]},{k:1600,d:[]},{k:1800,d:[]}];
+SC.plans=s=>{
+  const head='<div class="lhead"><b>Рационы на 3 дня</b><span>Скоро</span></div><div class="pintro">Готовые наборы блюд на три дня. Выбирай по калорийности: 1400, 1600 или 1800 ккал в день.</div><div class="plans">'+PLANS.map(p=>'<div class="plan">'+(p.d.length?'':'<span class="soon">Скоро</span>')+'<div class="pk">'+p.k+'<small>ккал в день</small></div><p>Рацион на 3 дня · 3 блюда</p></div>').join('')+'</div>';
+  return isWide()?wShell(s,'<div class="wplans">'+head+'</div>'):'<div class="pbody">'+head+'</div>'+tabbar(s,'plans');
+};
 gridHTML=s=>isWide()?gridW(s):gridM(s);
 const VV_BASE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'/mcp':(window.VV_PROXY||'');
 const VV_ON=!!VV_BASE;
@@ -596,7 +611,7 @@ function tick(){
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify({fav:[...S.fav],list:S.list,chk:S.chk,sc:S.screen,rid:S.rid,n:S.n,st:S.step,cat:S.cat,T:T?{end:T.end,rid:T.rid,step:T.step,name:T.name,done:T.done}:null}))}catch(e){}}
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;S.fav=new Set(d.fav||[]);S.list=d.list||{};S.chk=d.chk||{};
-    if(['home','list','fav','vv','recipe','cook'].includes(d.sc)&&((d.sc!=='recipe'&&d.sc!=='cook')||get(d.rid))){S.screen=d.sc;S.rid=d.rid||S.rid;S.n=d.n||S.n;S.step=d.st||0;S.cat=CATS.includes(d.cat)?d.cat:'Все'}if(d.T&&d.T.end){T=d.T;if(T.done)T.left=0;else{T.left=remain();if(T.left<=0){T.done=true;T.left=0}else tm=setInterval(tick,1000)}}}catch(e){}}
+    if(['home','plans','list','fav','vv','recipe','cook'].includes(d.sc)&&((d.sc!=='recipe'&&d.sc!=='cook')||get(d.rid))){S.screen=d.sc;S.rid=d.rid||S.rid;S.n=d.n||S.n;S.step=d.st||0;S.cat=CATS.includes(d.cat)?d.cat:'Все'}if(d.T&&d.T.end){T=d.T;if(T.done)T.left=0;else{T.left=remain();if(T.left<=0){T.done=true;T.left=0}else tm=setInterval(tick,1000)}}}catch(e){}}
 function render(){
   const pb=root.querySelector('.pbody');const top=pb?pb.scrollTop:0;
   root.innerHTML=SC[S.screen](S)+tmrB(S);
